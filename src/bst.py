@@ -13,9 +13,9 @@ class BinarySearchTree(object):
         self._size = 0
         self._rbal = 0
         self._lbal = 0
-        self._max_deth = 0
+        self._max_depth = 0
         self._root = None
-        if iter is not None:
+        if itter is not None:
             if type(itter) not in [tuple, list, int, float]:
                 raise TypeError('Please enter an iterable or number.')
             if type(itter) in [int, float]:
@@ -55,7 +55,43 @@ class BinarySearchTree(object):
             return False
         return True
 
-   def insert(self, val):
-    """."""
-    if val is None:
-        raise ValueError('Value is none')
+   def insert(self, data):
+    """Insert a new value into binary search tree."""
+    if type(data) not in [int, float]:
+        raise ValueError('This binary search tree only accepts ints and floats as values.')
+    new_node = Node(data)
+    if self._root is None:
+        self._root = new_node
+        self._depth = 1
+    else:
+        current_node = self._root
+        prev_node = current_node
+        current_depth = 1
+        if data > self._root.data:
+            dir = right
+        else:
+            dir = left
+        while True:
+            current_depth += 1
+            if data > current_node.data:
+                prev_node = current_node
+                current_node = current_node._rkid
+                if current_node is None:
+                    prev_node._rkid = new_node
+                    break
+            elif data < current_node.data:
+                prev_node = current_node
+                current_node = current_node._lkid
+                if current_node is None:
+                    prev_node._lkid = new_node
+                    break
+            else:
+                raise ValueError('Can\'t insert a node with the same value as another node.')
+        if current_depth > self._max_depth:
+            self._max_depth = current_depth
+        if dir == right and self._rbal < current_depth:
+            self._rbal = current_depth
+        if dir == left and self._lbal < current_depth:
+            self._lbal = current_depth
+        self._size += 1
+
