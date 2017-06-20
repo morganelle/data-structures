@@ -105,6 +105,78 @@ class BinarySearchTree(object):
                 self._lbal = current_depth
         self._size += 1
 
+    def breadth_first(self):
+        """sorts my breadth first"""
+        nodes_to_vist = []
+        curr = self._root
+        nodes_to_vist.append(curr)
+        while True:
+            if len(nodes_to_vist) == 0:
+                break
+            curr = nodes_to_vist[0]
+            if curr._lkid:
+                nodes_to_vist.append(curr._lkid)
+            if curr._rkid:
+                nodes_to_vist.append(curr._rkid)
+            import pdb; pdb.set_trace()
+            yield curr._data
+            nodes_to_vist.remove(curr)
+
+    def pre_order_helper(self, node):
+        """moves the pre order along the tree"""
+        curr = node
+        yield curr._data
+        if curr._lkid:
+            for x in self.pre_order_helper(curr._lkid):
+                yield x
+        if curr._rkid:
+            for x in self.pre_order_helper(curr._rkid):
+                yield x
+
+    def pre_order(self):
+        """pre_order sort"""
+        for x in self.pre_order_helper(self._root):
+            yield x
+
+    def in_order_helper(self, node):
+        """moves the pre order along the tree"""
+        curr = node
+        if curr._lkid:
+            for x in self.in_order_helper(curr._lkid):
+                yield x
+        yield curr._data
+        if curr._rkid:
+            for x in self.in_order_helper(curr._rkid):
+                yield x
+
+    def in_order(self):
+        """pre_order sort"""
+        for x in self.in_order_helper(self._root):
+            yield x
+
+
+    def post_order_helper(self, node):
+        """moves the pre order along the tree"""
+        curr = node
+        if curr._lkid:
+            for x in self.post_order_helper(curr._lkid):
+                yield x
+        if curr._rkid:
+            for x in self.post_order_helper(curr._rkid):
+                yield x
+        yield curr._data
+
+    def post_order(self):
+        """pre_order sort"""
+        for x in self.post_order_helper(self._root):
+            yield x
+        
+            
+        
+        
+    
+            
+
 
 def _best_case():
     SETUP_CODE = """

@@ -143,3 +143,54 @@ def test_insert():
     assert new_tree.contains(4) is False
     new_tree.insert(4)
     assert new_tree.contains(4) is True
+
+    
+def test_breadth_first():
+    """test breadth first"""
+    new_tree = BinarySearchTree([4,2,3,1,6,5,7])
+    gen = new_tree.breadth_first()
+    assert next(gen) is 4
+    assert next(gen) is 2
+    assert next(gen) is 6
+    assert next(gen) is 1
+    assert next(gen) is 3
+    assert next(gen) is 5
+    assert next(gen) is 7
+
+    
+def test_pre_order():
+    """test pre-order first"""
+    new_tree = BinarySearchTree([4,2,3,1,6,5,7])
+    gen = new_tree.pre_order()
+    assert next(gen) is 4
+    assert next(gen) is 2
+    assert next(gen) is 1
+    assert next(gen) is 3
+    assert next(gen) is 6
+    assert next(gen) is 5
+    assert next(gen) is 7
+
+
+def test_in_order():
+    """test pre-order first"""
+    new_tree = BinarySearchTree([4,2,3,1,6,5,7])
+    gen = new_tree.in_order()
+    assert next(gen) is 1
+    assert next(gen) is 2
+    assert next(gen) is 3
+    assert next(gen) is 4
+    assert next(gen) is 5
+    assert next(gen) is 6
+    assert next(gen) is 7
+
+def test_post_order():
+    """test pre-order first"""
+    new_tree = BinarySearchTree([4,2,3,1,6,5,7])
+    gen = new_tree.post_order()
+    assert next(gen) is 1
+    assert next(gen) is 3
+    assert next(gen) is 2
+    assert next(gen) is 5
+    assert next(gen) is 7
+    assert next(gen) is 6
+    assert next(gen) is 4
