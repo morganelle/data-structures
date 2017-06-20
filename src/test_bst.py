@@ -1,94 +1,148 @@
 """Tests for binary search tree."""
-from bst import Node
+# from bst import Node
 from bst import BinarySearchTree
+import pytest
+
+# @pytest.fixture
+# def
+
+
+def test_init_error_string():
+    """Test init with string."""
+    with pytest.raises(TypeError):
+        BinarySearchTree('cake')
+
 
 def test_init():
-    """testing init"""
+    """Test init with no data."""
     new_tree = BinarySearchTree()
     assert new_tree._size == 0
     assert new_tree._rbal == 0
     assert new_tree._lbal == 0
     assert new_tree._max_depth == 0
-    assert new_tree._root == None
-    new_tree = BinarySearchTree([2,1,3])
+    assert new_tree._root is None
+
+
+def test_init_list_float():
+    """Test init with iterable."""
+    new_tree = BinarySearchTree(2.5)
+    assert new_tree._root._data == 2.5
+    assert new_tree._size == 1
+    assert new_tree._rbal == 0
+    assert new_tree._lbal == 0
+    assert new_tree._max_depth == 0
+
+
+def test_init_list():
+    """Test init with iterable."""
+    new_tree = BinarySearchTree([2, 1, 3])
     assert new_tree._size == 3
-    assert new_tree._rbal == 2
-    assert new_tree._lbal == 2
-    assert new_tree._max_depth == 2
-    
-def test_size()
-"""testing size"""
+    assert new_tree._rbal == 1
+    assert new_tree._lbal == 1
+    assert new_tree._max_depth == 1
+
+
+def test_init_tuple():
+    """Test init with iterable."""
+    new_tree = BinarySearchTree((2, 1, 3))
+    assert new_tree._size == 3
+    assert new_tree._rbal == 1
+    assert new_tree._lbal == 1
+    assert new_tree._max_depth == 1
+
+
+def test_size():
+    """Test size."""
     new_tree = BinarySearchTree()
     assert new_tree.size() == 0
-    new_tree = BinarySearchTree.insert(2)
+    new_tree.insert(2)
     assert new_tree.size() == 1
-    new_tree = BinarySearchTree.insert(1)
-    assert new_tree.size()== 2
-    new_tree = BinarySearchTree.insert(3)
+    new_tree.insert(1)
+    assert new_tree.size() == 2
+    new_tree.insert(3)
     assert new_tree.size() == 3
 
-def test_balance()
-"""testing balance"""
+
+def test_balance():
+    """Test balance."""
     new_tree = BinarySearchTree()
     assert new_tree.balance() == 0
-    new_tree = BinarySearchTree.insert(2)
+    new_tree.insert(2)
     assert new_tree.balance() == 0
-    new_tree = BinarySearchTree.insert(1)
-    assert new_tree.balance()== -1
-    new_tree = BinarySearchTree.insert(3)
+    new_tree.insert(1)
+    assert new_tree.balance() == -1
+    new_tree.insert(3)
     assert new_tree.balance() == 0
-    new_tree = BinarySearchTree.insert(4)
+    new_tree.insert(4)
     assert new_tree.balance() == 1
 
-def test_depth()
-"""testing depth"""
+
+def test_depth():
+    """Test depth."""
     new_tree = BinarySearchTree()
     assert new_tree.depth() == 0
-    new_tree = BinarySearchTree.insert(2)
+    new_tree.insert(2)
+    assert new_tree.depth() == 0
+    new_tree.insert(1)
     assert new_tree.depth() == 1
-    new_tree = BinarySearchTree.insert(1)
-    assert new_tree.depth()== 2
-    new_tree = BinarySearchTree.insert(3)
+    new_tree.insert(3)
+    assert new_tree.depth() == 1
+    new_tree.insert(4)
     assert new_tree.depth() == 2
-    new_tree = BinarySearchTree.insert(4)
-    assert new_tree.depth() == 3
 
 
-def test_search()
-"""testing search"""
+def test_search():
+    """Test search."""
     new_tree = BinarySearchTree()
-    assert new_tree.search(2) == None
-    new_tree = BinarySearchTree.insert(2)
+    assert new_tree.search(2) is None
+    new_tree.insert(2)
     assert new_tree.search(2)._data == 2
-    new_tree = BinarySearchTree.insert(1)
-    assert new_tree.balance(1)._data== 1
-    new_tree = BinarySearchTree.insert(3)
-    assert new_tree.balance(4) == None
-    new_tree = BinarySearchTree.insert(4)
-    assert new_tree.balance(4)._data == 4
-    
-def test_contains()
-"""testing contains"""
-    new_tree = BinarySearchTree()
-    assert new_tree.contians(2) == False
-    new_tree = BinarySearchTree.insert(2)
-    assert new_tree.contains(2)== True
-    new_tree = BinarySearchTree.insert(1)
-    assert new_tree.contains(1)== True
-    new_tree = BinarySearchTree.insert(3)
-    assert new_tree.contains(4) == False
-    new_tree = BinarySearchTree.insert(4)
-    assert new_tree.contains(4) == True
+    new_tree.insert(1)
+    assert new_tree.search(1)._data == 1
+    new_tree.insert(3)
+    assert new_tree.search(4) is None
+    new_tree.insert(4)
+    assert new_tree.search(4)._data == 4
 
-def test_insert()
-"""testing insert"""
+
+def test_contains():
+    """Test contains method."""
     new_tree = BinarySearchTree()
-    assert new_tree.contians(2) == False
-    new_tree = BinarySearchTree.insert(2)
-    assert new_tree.contains(2)== True
-    new_tree = BinarySearchTree.insert(1)
-    assert new_tree.contains(1)== True
-    new_tree = BinarySearchTree.insert(3)
-    assert new_tree.contains(4) == False
-    new_tree = BinarySearchTree.insert(4)
-    assert new_tree.contains(4) == True
+    assert new_tree.contains(2) is False
+    new_tree.insert(2)
+    assert new_tree.contains(2) is True
+    new_tree.insert(1)
+    assert new_tree.contains(1) is True
+    new_tree.insert(3)
+    assert new_tree.contains(4) is False
+    new_tree.insert(4)
+    assert new_tree.contains(4) is True
+
+
+def test_insert_tuple():
+    """Test inserting tuple raises error."""
+    new_tree = BinarySearchTree()
+    with pytest.raises(TypeError):
+        new_tree.insert((9, 'hello'))
+
+
+def test_insert_dupe():
+    """Test insert."""
+    new_tree = BinarySearchTree()
+    new_tree.insert(2)
+    with pytest.raises(ValueError):
+        new_tree.insert(2)
+
+
+def test_insert():
+    """Test insert."""
+    new_tree = BinarySearchTree()
+    assert new_tree.contains(2) is False
+    new_tree.insert(2)
+    assert new_tree.contains(2) is True
+    new_tree.insert(1)
+    assert new_tree.contains(1) is True
+    new_tree.insert(3)
+    assert new_tree.contains(4) is False
+    new_tree.insert(4)
+    assert new_tree.contains(4) is True

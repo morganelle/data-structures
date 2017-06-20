@@ -1,15 +1,21 @@
 """Python implementation of a binary search tree."""
 
+
 class Node(object):
     """Initialize a node object."""
-    def __init__(self):
-        self._data = 0
+
+    def __init__(self, data):
+        """."""
+        self._data = data
         self._rkid = None
         self._lkid = None
-        
+
+
 class BinarySearchTree(object):
     """Initialize a binary search tree object."""
+
     def __init__(self, itter=None):
+        """Init a binary search tree with no data or iterable."""
         self._size = 0
         self._rbal = 0
         self._lbal = 0
@@ -23,21 +29,21 @@ class BinarySearchTree(object):
             else:
                 for item in itter:
                     self.insert(item)
-        
-   def size(self):
-    """Return number of nodes in binary search tree."""
+
+    def size(self):
+        """Return number of nodes in binary search tree."""
         return self._size
-    
-   def balance(self):
-    """Return difference between left and right balance."""
+
+    def balance(self):
+        """Return difference between left and right balance."""
         return self._rbal - self._lbal
-    
-   def depth(self):
-    """Return the max depth of the binary search tree."""
+
+    def depth(self):
+        """Return the max depth of the binary search tree."""
         return self._max_depth
 
-   def search(self, val):
-    """Search for a value and return a node if found."""
+    def search(self, val):
+        """Search for a value and return a node if found."""
         current_node = self._root
         while True:
             if current_node is None:
@@ -55,43 +61,44 @@ class BinarySearchTree(object):
             return False
         return True
 
-   def insert(self, data):
-    """Insert a new value into binary search tree."""
-    if type(data) not in [int, float]:
-        raise ValueError('This binary search tree only accepts ints and floats as values.')
-    new_node = Node(data)
-    if self._root is None:
-        self._root = new_node
-        self._depth = 1
-    else:
+    def insert(self, data):
+        """Insert a new value into binary search tree."""
+        if type(data) not in [int, float]:
+            raise TypeError('This binary search tree only accepts ints and floats as values.')
         current_node = self._root
-        prev_node = current_node
-        current_depth = 1
-        if data > self._root.data:
-            dir = right
+        current_depth = 0
+        new_node = Node(data)
+        if self._root is None:
+            self._root = new_node
+            self._depth = 1
         else:
-            dir = left
-        while True:
-            current_depth += 1
-            if data > current_node.data:
-                prev_node = current_node
-                current_node = current_node._rkid
-                if current_node is None:
-                    prev_node._rkid = new_node
-                    break
-            elif data < current_node.data:
-                prev_node = current_node
-                current_node = current_node._lkid
-                if current_node is None:
-                    prev_node._lkid = new_node
-                    break
+            current_node = self._root
+            prev_node = current_node
+            current_depth = 0
+            if data > self._root._data:
+                dir = 'right'
             else:
-                raise ValueError('Can\'t insert a node with the same value as another node.')
-        if current_depth > self._max_depth:
-            self._max_depth = current_depth
-        if dir == right and self._rbal < current_depth:
-            self._rbal = current_depth
-        if dir == left and self._lbal < current_depth:
-            self._lbal = current_depth
+                dir = 'left'
+            while True:
+                current_depth += 1
+                if data > current_node._data:
+                    prev_node = current_node
+                    current_node = current_node._rkid
+                    if current_node is None:
+                        prev_node._rkid = new_node
+                        break
+                elif data < current_node._data:
+                    prev_node = current_node
+                    current_node = current_node._lkid
+                    if current_node is None:
+                        prev_node._lkid = new_node
+                        break
+                else:
+                    raise ValueError('Can\'t insert a node with the same value as another node.')
+            if current_depth > self._max_depth:
+                self._max_depth = current_depth
+            if dir == 'right' and self._rbal < current_depth:
+                self._rbal = current_depth
+            if dir == 'left' and self._lbal < current_depth:
+                self._lbal = current_depth
         self._size += 1
-
