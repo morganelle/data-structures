@@ -3,9 +3,6 @@
 from bst import BinarySearchTree
 import pytest
 
-# @pytest.fixture
-# def
-
 
 def test_init_error_string():
     """Test init with string."""
