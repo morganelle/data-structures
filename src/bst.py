@@ -1,6 +1,8 @@
 """Python implementation of a binary search tree."""
 
 import timeit
+
+
 class Node(object):
     """Initialize a node object."""
 
@@ -102,38 +104,40 @@ class BinarySearchTree(object):
             if dir == 'left' and self._lbal < current_depth:
                 self._lbal = current_depth
         self._size += 1
-        
+
+
 def _best_case():
-    SETUP_CODE="""
-    from __main__ import _best_case
-    import bst
+    SETUP_CODE = """
+from __main__ import _best_case
+from bst import BinarySearchTree
+from bst import Node
     """
     TEST_CODE = """
-    new_tree = BinarySearchTree([4,2,3,1,6,5,7]
-    new_tree.search(7)
-    return
+new_tree = BinarySearchTree([4,2,3,1,6,5,7])
+new_tree.search(7)
     """
-    print(timeit.repeat(setup = SETUP_CODE,
-                        stmt = TEST_CODE,
-                        number = 10000))
+    return(timeit.repeat(setup=SETUP_CODE,
+    stmt=TEST_CODE,
+    number=100000))
+
+
 def _worst_case():
-    SETUP_CODE="""
-    from __main__ import _worst_case
-    import bst
+    SETUP_CODE = """
+from __main__ import _best_case
+from bst import BinarySearchTree
+from bst import Node
     """
     TEST_CODE = """
-    new_tree = BinarySearchTree([1,2,3,4,5,6,7]
-    new_tree.search(7)
-    return
+new_tree = BinarySearchTree([1,2,3,4,5,6,7])
+new_tree.search(7)
     """
-    print(timeit.repeat(setup = SETUP_CODE,
-                        stmt = TEST_CODE,
-                        number = 10000))
-        
-if __name__ == ' __main__':
-    _best_case()
+    return(timeit.repeat(setup=SETUP_CODE,
+                        stmt=TEST_CODE,
+                        number=100000))
+
+
+if __name__ == '__main__':
+    print(_best_case())
     print('O(log(n))')
-    _worst_case()
+    print(_worst_case())
     print('O(n)')
-    
-    
