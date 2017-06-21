@@ -118,7 +118,6 @@ class BinarySearchTree(object):
                 nodes_to_vist.append(curr._lkid)
             if curr._rkid:
                 nodes_to_vist.append(curr._rkid)
-            import pdb; pdb.set_trace()
             yield curr._data
             nodes_to_vist.remove(curr)
 
