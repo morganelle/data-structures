@@ -194,3 +194,29 @@ def test_post_order():
     assert next(gen) is 7
     assert next(gen) is 6
     assert next(gen) is 4
+
+def test_del():
+    """Test del."""
+    new_tree = BinarySearchTree([4,2,3,1,6,5,7])
+    assert new_tree.contains(4) is True
+    new_tree.delete(4)
+    assert new_tree.contains(4) is False
+    assert new_tree.contains(7) is True
+    new_tree.delete(7)
+    assert new_tree.contains(7) is False
+    assert new_tree.contains(6) is True
+    new_tree.delete(6)
+    assert new_tree.contains(6) is False
+    assert new_tree.contains(2) is True
+    new_tree.delete(2)
+    assert new_tree.contains(2) is False
+    assert new_tree.contains(1) is True
+    new_tree.delete(1)
+    assert new_tree.contains(1) is False
+    assert new_tree.contains(3) is True
+    new_tree.delete(3)
+    assert new_tree.contains(3) is False
+    assert new_tree.contains(5) is True
+    new_tree.delete(5)
+    assert new_tree.contains(5) is False
+
