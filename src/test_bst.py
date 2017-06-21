@@ -4,20 +4,25 @@ from bst import BinarySearchTree
 import pytest
 
 
+@pytest.fixture
+def empty_tree():
+    """Init empty tree fixture."""
+    return BinarySearchTree()
+
+
 def test_init_error_string():
     """Test init with string."""
     with pytest.raises(TypeError):
         BinarySearchTree('cake')
 
 
-def test_init():
-    """Test init with no data."""
-    new_tree = BinarySearchTree()
-    assert new_tree._size == 0
-    assert new_tree._rbal == 0
-    assert new_tree._lbal == 0
-    assert new_tree._max_depth == 0
-    assert new_tree._root is None
+def test_init(empty_tree):
+    """Test bst attributes with no data."""
+    assert empty_tree._size == 0
+    assert empty_tree._rbal == 0
+    assert empty_tree._lbal == 0
+    assert empty_tree._max_depth == 0
+    assert empty_tree._root is None
 
 
 def test_init_list_float():
@@ -116,19 +121,17 @@ def test_contains():
     assert new_tree.contains(4) is True
 
 
-def test_insert_tuple():
+def test_insert_tuple(empty_tree):
     """Test inserting tuple raises error."""
-    new_tree = BinarySearchTree()
     with pytest.raises(TypeError):
-        new_tree.insert((9, 'hello'))
+        empty_tree.insert((9, 'hello'))
 
 
-def test_insert_dupe():
+def test_insert_dupe(empty_tree):
     """Test insert."""
-    new_tree = BinarySearchTree()
-    new_tree.insert(2)
+    empty_tree.insert(2)
     with pytest.raises(ValueError):
-        new_tree.insert(2)
+        empty_tree.insert(2)
 
 
 def test_insert():
