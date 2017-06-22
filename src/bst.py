@@ -207,9 +207,9 @@ class BinarySearchTree(object):
             # import pdb; pdb.set_trace()
             self._del_node_two_children(parent, node)
         elif node._rkid or node._lkid:
-            self._del_node_one_child(node, parent)
+            self._del_node_one_child(parent, node)
         else:
-            self._del_node_no_children(node, parent)
+            self._del_node_no_children(parent, node)
 
     def find_parent_node(self, node, parent=None):
         """."""
