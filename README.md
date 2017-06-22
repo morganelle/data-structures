@@ -13,3 +13,7 @@ All modules and tests located in src directory.
     - search: Search for a value and return a node if found.
     - contains: Evaluate whether a value is in a binary search tree.
     - insert: Insert a new value into binary search tree.
+    - breadth_first: sort bst breadth first.
+    - pre_order: sort bst by pre-order.
+    - in_order: sort bst in order.
+    - post_order: post order sort of bst.

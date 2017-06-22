@@ -105,35 +105,94 @@ class BinarySearchTree(object):
                 self._lbal = current_depth
         self._size += 1
 
+    def breadth_first(self):
+        """Sort bst breadth first."""
+        nodes_to_vist = []
+        curr = self._root
+        nodes_to_vist.append(curr)
+        while len(nodes_to_vist):
+            curr = nodes_to_vist[0]
+            if curr._lkid:
+                nodes_to_vist.append(curr._lkid)
+            if curr._rkid:
+                nodes_to_vist.append(curr._rkid)
+            yield curr._data
+            nodes_to_vist.remove(curr)
+
+    def _pre_order_helper(self, node):
+        """Move the pre order along the tree."""
+        curr = node
+        yield curr._data
+        if curr._lkid:
+            for node_data in self._pre_order_helper(curr._lkid):
+                yield node_data
+        if curr._rkid:
+            for node_data in self._pre_order_helper(curr._rkid):
+                yield node_data
+
+    def pre_order(self):
+        """Sort bst by pre-order."""
+        for node_data in self._pre_order_helper(self._root):
+            yield node_data
+
+    def _in_order_helper(self, node):
+        """Move the pre order along the tree."""
+        curr = node
+        if curr._lkid:
+            for node_data in self._in_order_helper(curr._lkid):
+                yield node_data
+        yield curr._data
+        if curr._rkid:
+            for node_data in self._in_order_helper(curr._rkid):
+                yield node_data
+
+    def in_order(self):
+        """Sort bst in order."""
+        for node_data in self._in_order_helper(self._root):
+            yield node_data
+
+    def _post_order_helper(self, node):
+        """Move the pre order along the tree."""
+        curr = node
+        if curr._lkid:
+            for node_data in self._post_order_helper(curr._lkid):
+                yield node_data
+        if curr._rkid:
+            for node_data in self._post_order_helper(curr._rkid):
+                yield node_data
+        yield curr._data
+
+    def post_order(self):
+        """Post order sort of bst."""
+        for node_data in self._post_order_helper(self._root):
+            yield node_data
+
 
 def _best_case():
-    SETUP_CODE = """
+    """Best-case performance case of bst search."""
+    setup_code = """
 from __main__ import _best_case
 from bst import BinarySearchTree
 from bst import Node
     """
-    TEST_CODE = """
+    test_code = """
 new_tree = BinarySearchTree([4,2,3,1,6,5,7])
 new_tree.search(7)
     """
-    return(timeit.repeat(setup=SETUP_CODE,
-    stmt=TEST_CODE,
-    number=100000))
+    return(timeit.repeat(setup=setup_code, stmt=test_code, number=100000))
 
 
 def _worst_case():
-    SETUP_CODE = """
+    setup_code = """
 from __main__ import _best_case
 from bst import BinarySearchTree
 from bst import Node
     """
-    TEST_CODE = """
+    test_code = """
 new_tree = BinarySearchTree([1,2,3,4,5,6,7])
 new_tree.search(7)
     """
-    return(timeit.repeat(setup=SETUP_CODE,
-                        stmt=TEST_CODE,
-                        number=100000))
+    return(timeit.repeat(setup=setup_code, stmt=test_code, number=100000))
 
 
 if __name__ == '__main__':
