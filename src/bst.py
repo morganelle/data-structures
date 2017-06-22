@@ -9,6 +9,7 @@ class Node(object):
     def __init__(self, data):
         """."""
         self._data = data
+        self._parent = None
         self._rkid = None
         self._lkid = None
 
@@ -88,12 +89,14 @@ class BinarySearchTree(object):
                     current_node = current_node._rkid
                     if current_node is None:
                         prev_node._rkid = new_node
+                        new_node._parent = prev_node
                         break
                 elif data < current_node._data:
                     prev_node = current_node
                     current_node = current_node._lkid
                     if current_node is None:
                         prev_node._lkid = new_node
+                        new_node._parent = prev_node
                         break
                 else:
                     raise ValueError('Can\'t insert a node with the same value as another node.')
@@ -199,55 +202,75 @@ class BinarySearchTree(object):
 
     def delete(self, val):
         """."""
+        #import pdb; pdb.set_trace()
         if not self.contains(val):
-            raise ValueError('Value is not in the tree')
+            return None
         node = self.search(val)
-        parent = self.find_parent_node(node)
+        # import pdb; pdb.set_trace()
         if node._rkid and node._lkid:
-            # import pdb; pdb.set_trace()
-            self._del_node_two_children(parent, node)
+            print('in two kid clause', node._data)
+            self._del_node_two_children(node._parent, node)
         elif node._rkid or node._lkid:
-            self._del_node_one_child(parent, node)
+            print('in two one clause', node._data)
+            self._del_node_one_child(node._parent, node)
         else:
-            self._del_node_no_children(parent, node)
+            print('in childless clause', node._data)
+            self._del_node_no_children(node._parent, node)
+        # pdb.set_trace()
 
-    def find_parent_node(self, node, parent=None):
-        """."""
-        parent = parent
-        if parent is None:
-            parent = self._root
-        if parent._rkid is node:
-            return parent
-        elif parent._rkid:
-            other = self.find_parent_node(node, parent._rkid)
-            if other is not None:
-                return other
-        if parent._lkid is node:
-            return parent
-        elif parent._lkid:
-            other = self.find_parent_node(node, parent._lkid)
-            if other is not None:
-                return other
-        return None
+    # def find_parent_node(self, node, parent=None):
+    #     """."""
+    #     parent = parent
+    #     if parent is None:
+    #         parent = self._root
+    #     if parent._rkid is node:
+    #         return parent
+    #     elif parent._rkid:
+    #         other = self.find_parent_node(node, parent._rkid)
+    #         if other is not None:
+    #             return other
+    #     if parent._lkid is node:
+    #         return parent
+    #     elif parent._lkid:
+    #         other = self.find_parent_node(node, parent._lkid)
+    #         if other is not None:
+    #             return other
+    #     return None
 
     def _del_node_no_children(self, parent, node):
         """."""
-        if parent._rkid == node:
-            parent._rkid = None
+        # import pdb; pdb.set_trace()
+        if parent:
+            if parent._rkid == node:
+                parent._rkid = None
+            else:
+                parent._lkid = None
         else:
-            parent._lkid = None
+            self._root = None
 
     def _del_node_one_child(self, parent, node):
         """."""
-        if parent._rkid == node:
+        if parent:
+            if parent._rkid == node:
+                if node._rkid:
+                    parent._rkid = node._rkid
+                    node._rkid._parent = parent
+                else:
+                    parent._rkid = node._lkid
+                    node._lkid._parent = parent
             if node._rkid:
-                parent._rkid = node._rkid
+                parent._lkid = node._rkid
+                node._rkid._parent = parent
             else:
-                parent._rkid = node._lkid
-        elif node._rkid:
-            parent._lkid = node._rkid
+                parent._lkid = node._lkid
+                node._lkid._parent = parent
         else:
-            parent._lkid = node._lkid
+            if node._rkid:
+                self._root = node._rkid
+                node._rkid._parent = None
+            else:
+                self._root = node._lkid
+                node._lkid._parent = None
 
     def _del_node_two_children(self, parent, node):
         """."""
@@ -255,13 +278,20 @@ class BinarySearchTree(object):
         self.delete(succ._data)
         succ._rkid = node._rkid
         succ._lkid = node._lkid
+        if node._rkid:
+            node._rkid._parent = succ
+        if node._lkid:
+            node._lkid._parent = succ
         if node is not self._root:
             if parent._rkid is node:
                 parent._rkid = succ
+                succ._parent = parent
             else:
                 parent._lkid = succ
+                succ._parent = parent
         else:
             self._root = succ
+            succ._parent = None
 
     def _get_successor(self, node):
         """Find node to replace deleted node."""
