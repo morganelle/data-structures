@@ -9,6 +9,11 @@ def empty_tree():
     """Init empty tree fixture."""
     return BinarySearchTree()
 
+@pytest.fixture
+def tree_init_list():
+    """Init empty tree fixture."""
+    return BinarySearchTree([4,2,3,1,6,5,7])
+
 
 def test_init_error_string():
     """Test init with string."""
@@ -147,11 +152,10 @@ def test_insert():
     new_tree.insert(4)
     assert new_tree.contains(4) is True
 
-    
-def test_breadth_first():
-    """test breadth first"""
-    new_tree = BinarySearchTree([4,2,3,1,6,5,7])
-    gen = new_tree.breadth_first()
+
+def test_breadth_first(tree_init_list):
+    """test breadth first."""
+    gen = tree_init_list.breadth_first()
     assert next(gen) is 4
     assert next(gen) is 2
     assert next(gen) is 6
@@ -160,36 +164,34 @@ def test_breadth_first():
     assert next(gen) is 5
     assert next(gen) is 7
 
-    
-def test_pre_order():
+
+def test_pre_order(tree_init_list):
+    """test pre-order first."""
+    gen = tree_init_list.pre_order()
+    assert next(gen) is 4
+    assert next(gen) is 2
+    assert next(gen) is 1
+    assert next(gen) is 3
+    assert next(gen) is 6
+    assert next(gen) is 5
+    assert next(gen) is 7
+
+
+def test_in_order(tree_init_list):
+    """test pre-order first."""
+    gen = tree_init_list.in_order()
+    assert next(gen) is 1
+    assert next(gen) is 2
+    assert next(gen) is 3
+    assert next(gen) is 4
+    assert next(gen) is 5
+    assert next(gen) is 6
+    assert next(gen) is 7
+
+
+def test_post_order(tree_init_list):
     """test pre-order first"""
-    new_tree = BinarySearchTree([4,2,3,1,6,5,7])
-    gen = new_tree.pre_order()
-    assert next(gen) is 4
-    assert next(gen) is 2
-    assert next(gen) is 1
-    assert next(gen) is 3
-    assert next(gen) is 6
-    assert next(gen) is 5
-    assert next(gen) is 7
-
-
-def test_in_order():
-    """test pre-order first"""
-    new_tree = BinarySearchTree([4,2,3,1,6,5,7])
-    gen = new_tree.in_order()
-    assert next(gen) is 1
-    assert next(gen) is 2
-    assert next(gen) is 3
-    assert next(gen) is 4
-    assert next(gen) is 5
-    assert next(gen) is 6
-    assert next(gen) is 7
-
-def test_post_order():
-    """test pre-order first"""
-    new_tree = BinarySearchTree([4,2,3,1,6,5,7])
-    gen = new_tree.post_order()
+    gen = tree_init_list.post_order()
     assert next(gen) is 1
     assert next(gen) is 3
     assert next(gen) is 2
@@ -198,28 +200,27 @@ def test_post_order():
     assert next(gen) is 6
     assert next(gen) is 4
 
-def test_del():
+
+def test_del(tree_init_list):
     """Test del."""
-    new_tree = BinarySearchTree([4,2,3,1,6,5,7])
-    assert new_tree.contains(4) is True
-    new_tree.delete(4)
-    assert new_tree.contains(4) is False
-    assert new_tree.contains(7) is True
-    new_tree.delete(7)
-    assert new_tree.contains(7) is False
-    assert new_tree.contains(6) is True
-    new_tree.delete(6)
-    assert new_tree.contains(6) is False
-    assert new_tree.contains(2) is True
-    new_tree.delete(2)
-    assert new_tree.contains(2) is False
-    assert new_tree.contains(1) is True
-    new_tree.delete(1)
-    assert new_tree.contains(1) is False
-    assert new_tree.contains(3) is True
-    new_tree.delete(3)
-    assert new_tree.contains(3) is False
-    assert new_tree.contains(5) is True
-    new_tree.delete(5)
-    assert new_tree.contains(5) is False
-
+    assert tree_init_list.contains(4) is True
+    tree_init_list.delete(4)
+    assert tree_init_list.contains(4) is False
+    assert tree_init_list.contains(7) is True
+    tree_init_list.delete(7)
+    assert tree_init_list.contains(7) is False
+    assert tree_init_list.contains(6) is True
+    tree_init_list.delete(6)
+    assert tree_init_list.contains(6) is False
+    assert tree_init_list.contains(2) is True
+    tree_init_list.delete(2)
+    assert tree_init_list.contains(2) is False
+    assert tree_init_list.contains(1) is True
+    tree_init_list.delete(1)
+    assert tree_init_list.contains(1) is False
+    assert tree_init_list.contains(3) is True
+    tree_init_list.delete(3)
+    assert tree_init_list.contains(3) is False
+    assert tree_init_list.contains(5) is True
+    tree_init_list.delete(5)
+    assert tree_init_list.contains(5) is False

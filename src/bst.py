@@ -167,6 +167,113 @@ class BinarySearchTree(object):
         for node_data in self._post_order_helper(self._root):
             yield node_data
 
+    def _new_depth(self, node, curr_depth):
+        """."""
+        right = curr_depth
+        left = curr_depth
+        if node._rkid:
+            right = self._new_depth(node._rkid, curr_depth + 1)
+        if node._lkid:
+            left = self._new_depth(node._lkid, curr_depth + 1)
+        if right > left:
+            return right
+        return left
+
+    def _get_new_max(self):
+        """."""
+        right = 0
+        left = 0
+        if self.root._rkid:
+            right = self._new_depth(self.root._rkid, 1)
+        if self.root._lkid:
+            left = self._new_depth(self.root._lkid, 1)
+        if right < self._rbal:
+            self._rbal = right
+        if left < self._lbal:
+            self._lbal = left
+        if right > left:
+            if right < self._max_depth:
+                self._max_depth = right
+        elif left < self._max_depth:
+            self._max_depth = left
+
+    def delete(self, val):
+        """."""
+        if not self.contains(val):
+            raise ValueError('Value is not in the tree')
+        node = self.search(val)
+        parent = self.find_parent_node(node)
+        if node._rkid and node._lkid:
+            # import pdb; pdb.set_trace()
+            self._del_node_two_children(parent, node)
+        elif node._rkid or node._lkid:
+            self._del_node_one_child(node, parent)
+        else:
+            self._del_node_no_children(node, parent)
+
+    def find_parent_node(self, node, parent=None):
+        """."""
+        parent = parent
+        if parent is None:
+            parent = self._root
+        if parent._rkid is node:
+            return parent
+        elif parent._rkid:
+            other = self.find_parent_node(node, parent._rkid)
+            if other is not None:
+                return other
+        if parent._lkid is node:
+            return parent
+        elif parent._lkid:
+            other = self.find_parent_node(node, parent._lkid)
+            if other is not None:
+                return other
+        return None
+
+    def _del_node_no_children(self, parent, node):
+        """."""
+        if parent._rkid == node:
+            parent._rkid = None
+        else:
+            parent._lkid = None
+
+    def _del_node_one_child(self, parent, node):
+        """."""
+        if parent._rkid == node:
+            if node._rkid:
+                parent._rkid = node._rkid
+            else:
+                parent._rkid = node._lkid
+        elif node._rkid:
+            parent._lkid = node._rkid
+        else:
+            parent._lkid = node._lkid
+
+    def _del_node_two_children(self, parent, node):
+        """."""
+        succ = self._get_successor(node)
+        self.delete(succ._data)
+        succ._rkid = node._rkid
+        succ._lkid = node._lkid
+        if node is not self._root:
+            if parent._rkid is node:
+                parent._rkid = succ
+            else:
+                parent._lkid = succ
+        else:
+            self._root = succ
+
+    def _get_successor(self, node):
+        """Find node to replace deleted node."""
+        current_node = node
+        if node._rkid:
+            current_node = node._rkid
+        while True:
+            if not current_node._lkid:
+                break
+            current_node = current_node._lkid
+        return current_node
+
 
 def _best_case():
     """Best-case performance case of bst search."""
