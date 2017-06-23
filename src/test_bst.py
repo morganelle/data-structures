@@ -12,19 +12,19 @@ def empty_tree():
 
 @pytest.fixture
 def tree_init_list():
-    """Init empty tree fixture."""
+    """Init with numbers 1-7 tree fixture."""
     return BinarySearchTree([4, 2, 3, 1, 6, 5, 7])
 
 
 @pytest.fixture
 def tree_init_list_shorter_list():
-    """Init empty tree fixture."""
+    """Init with nubers 1,3,4,6,7 tree fixture."""
     return BinarySearchTree([4, 3, 1, 6, 7])
 
 
 @pytest.fixture
 def tree_init_list_longer_list():
-    """Init empty tree fixture."""
+    """Init with number 1-7 tree fixture we need a differenct name."""
     return BinarySearchTree([4, 2, 3, 1, 6, 7, 5])
 
 
@@ -246,27 +246,15 @@ def test_post_order(tree_init_list):
     assert next(gen) is 4
 
 
-# def test_del_node_no_kids():
-#     pass
-
-
-# def test_del_node_one_kid():
-#     pass
-
-
-# def test_del_node_two_kids():
-#     pass
-
-
 def test_del_root_no_kids(tree_init_one_node):
-    """."""
+    """Test del root when root has zero kids."""
     assert tree_init_one_node._root._data == 3
     tree_init_one_node.delete(3)
     assert tree_init_one_node._root is None
 
 
 def test_del_root_one_kid_right(tree_init_one_node_right):
-    """."""
+    """Test del root when root has one right kids."""
     assert tree_init_one_node_right._root._rkid._data == 3
     assert tree_init_one_node_right._root._parent is None
     assert tree_init_one_node_right._root._rkid._parent._data == 2
@@ -277,7 +265,7 @@ def test_del_root_one_kid_right(tree_init_one_node_right):
 
 
 def test_del_root_one_kid_left(tree_init_one_node_left):
-    """."""
+    """Test del root when root has one left kids."""
     assert tree_init_one_node_left._root._lkid._data == 3
     tree_init_one_node_left.delete(4)
     assert tree_init_one_node_left._root._lkid is None
@@ -286,7 +274,7 @@ def test_del_root_one_kid_left(tree_init_one_node_left):
 
 
 def test_del_left_node_check_parent(tree_init_list_longer_list):
-    """."""
+    """Test to check if we reasigned parent."""
     tree_init_list_longer_list.delete(2)
     assert tree_init_list_longer_list.search(3)._parent._data == 4
     tree_init_list_longer_list.delete(6)
@@ -294,7 +282,7 @@ def test_del_left_node_check_parent(tree_init_list_longer_list):
 
 
 def test_del_2kids_node_check_parent(tree_init_list_shorter_list):
-    """."""
+    """Test to check if we reasigned parent."""
     tree_init_list_shorter_list.delete(3)
     assert tree_init_list_shorter_list.search(1)._parent._data == 4
     tree_init_list_shorter_list.delete(6)
@@ -302,7 +290,7 @@ def test_del_2kids_node_check_parent(tree_init_list_shorter_list):
 
 
 def test_del_node_one_kid_right(tree_init_one_node_right):
-    """."""
+    """Test del node when root has one right kids."""
     assert tree_init_one_node_right._root._rkid._data == 3
     tree_init_one_node_right.delete(3)
     assert tree_init_one_node_right._root._rkid is None
@@ -310,7 +298,7 @@ def test_del_node_one_kid_right(tree_init_one_node_right):
 
 
 def test_del_node_one_kid_left(tree_init_one_node_left):
-    """."""
+    """Test del node when root has one left kids."""
     assert tree_init_one_node_left._root._lkid._data == 3
     tree_init_one_node_left.delete(3)
     assert tree_init_one_node_left._root._lkid is None
@@ -332,24 +320,11 @@ def test_del_root_two_kids(tree_init_list):
     assert tree_init_list.contains(7) is False
     assert tree_init_list.contains(6)
     tree_init_list.delete(6)
-    # # import pdb; pdb.set_trace()
     assert tree_init_list.contains(6) is False
-    # assert tree_init_list.contains(2) is True
-    # tree_init_list.delete(2)
-    # assert tree_init_list.contains(2) is False
-    # assert tree_init_list.contains(1) is True
-    # tree_init_list.delete(1)
-    # assert tree_init_list.contains(1) is False
-    # assert tree_init_list.contains(3) is True
-    # tree_init_list.delete(3)
-    # assert tree_init_list.contains(3) is False
-    # assert tree_init_list.contains(5) is True
-    # tree_init_list.delete(5)
-    # assert tree_init_list.contains(5) is False
 
 
 def test_del_left_node_two_kids(tree_init_list):
-    """Test del."""
+    """Test del node when has two  kids."""
     assert tree_init_list.contains(2)
     assert tree_init_list._root._data == 4
     tree_init_list.delete(2)
@@ -360,7 +335,7 @@ def test_del_left_node_two_kids(tree_init_list):
 
 
 def test_del_right_node_two_kids(tree_init_list):
-    """Test del."""
+    """Test del node when root has one right kids."""
     assert tree_init_list.contains(6)
     assert tree_init_list._root._data == 4
     tree_init_list.delete(6)
@@ -371,7 +346,7 @@ def test_del_right_node_two_kids(tree_init_list):
 
 
 def test_del_right_branch(tree_init_list):
-    """Test del."""
+    """Test del on branch node right."""
     assert tree_init_list.contains(1)
     assert tree_init_list._root._data == 4
     tree_init_list.delete(1)
@@ -382,7 +357,7 @@ def test_del_right_branch(tree_init_list):
 
 
 def test_del_left_branch(tree_init_list):
-    """Test del."""
+    """Test del on branch node left."""
     assert tree_init_list.contains(5)
     assert tree_init_list._root._data == 4
     tree_init_list.delete(5)

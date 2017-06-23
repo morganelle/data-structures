@@ -171,7 +171,7 @@ class BinarySearchTree(object):
             yield node_data
 
     def _new_depth(self, node, curr_depth):
-        """."""
+        """Sets the new right and left balance"""
         right = curr_depth
         left = curr_depth
         if node._rkid:
@@ -183,7 +183,7 @@ class BinarySearchTree(object):
         return left
 
     def _get_new_max(self):
-        """."""
+        """Gets the new max depth."""
         right = 0
         left = 0
         if self.root._rkid:
@@ -201,7 +201,7 @@ class BinarySearchTree(object):
             self._max_depth = left
 
     def delete(self, val):
-        """."""
+        """Checks the status of a node ."""
         #import pdb; pdb.set_trace()
         if not self.contains(val):
             return None
@@ -216,29 +216,11 @@ class BinarySearchTree(object):
         else:
             print('in childless clause', node._data)
             self._del_node_no_children(node._parent, node)
-        # pdb.set_trace()
-
-    # def find_parent_node(self, node, parent=None):
-    #     """."""
-    #     parent = parent
-    #     if parent is None:
-    #         parent = self._root
-    #     if parent._rkid is node:
-    #         return parent
-    #     elif parent._rkid:
-    #         other = self.find_parent_node(node, parent._rkid)
-    #         if other is not None:
-    #             return other
-    #     if parent._lkid is node:
-    #         return parent
-    #     elif parent._lkid:
-    #         other = self.find_parent_node(node, parent._lkid)
-    #         if other is not None:
-    #             return other
-    #     return None
+        self._get_new_max()
+            
 
     def _del_node_no_children(self, parent, node):
-        """."""
+        """Delets a node that has zero kids."""
         # import pdb; pdb.set_trace()
         if parent:
             if parent._rkid == node:
@@ -249,7 +231,7 @@ class BinarySearchTree(object):
             self._root = None
 
     def _del_node_one_child(self, parent, node):
-        """."""
+        """Delets a node that has one kids."""
         if parent:
             if parent._rkid == node:
                 if node._rkid:
@@ -273,7 +255,7 @@ class BinarySearchTree(object):
                 node._lkid._parent = None
 
     def _del_node_two_children(self, parent, node):
-        """."""
+        """Delets a node that has two kids."""
         succ = self._get_successor(node)
         self.delete(succ._data)
         succ._rkid = node._rkid
@@ -320,6 +302,7 @@ new_tree.search(7)
 
 
 def _worst_case():
+    """Worst-case performance case of bst search."""
     setup_code = """
 from __main__ import _best_case
 from bst import BinarySearchTree
