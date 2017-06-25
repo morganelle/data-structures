@@ -171,7 +171,7 @@ class BinarySearchTree(object):
             yield node_data
 
     def _new_depth(self, node, curr_depth):
-        """Sets the new right and left balance"""
+        """Set the new right and left balance."""
         right = curr_depth
         left = curr_depth
         if node._rkid:
@@ -183,45 +183,39 @@ class BinarySearchTree(object):
         return left
 
     def _get_new_max(self):
-        """Gets the new max depth."""
+        """Get the new max depth."""
         right = 0
         left = 0
-        if self.root._rkid:
-            right = self._new_depth(self.root._rkid, 1)
-        if self.root._lkid:
-            left = self._new_depth(self.root._lkid, 1)
-        if right < self._rbal:
-            self._rbal = right
-        if left < self._lbal:
-            self._lbal = left
-        if right > left:
-            if right < self._max_depth:
-                self._max_depth = right
-        elif left < self._max_depth:
-            self._max_depth = left
+        if self._root:
+            if self._root._rkid:
+                right = self._new_depth(self._root._rkid, 1)
+            if self._root._lkid:
+                left = self._new_depth(self._root._lkid, 1)
+            if right < self._rbal:
+                self._rbal = right
+            if left < self._lbal:
+                self._lbal = left
+            if right > left:
+                if right < self._max_depth:
+                    self._max_depth = right
+            elif left < self._max_depth:
+                self._max_depth = left
 
     def delete(self, val):
-        """Checks the status of a node ."""
-        #import pdb; pdb.set_trace()
+        """Check the status of a node."""
         if not self.contains(val):
             return None
         node = self.search(val)
-        # import pdb; pdb.set_trace()
         if node._rkid and node._lkid:
-            print('in two kid clause', node._data)
             self._del_node_two_children(node._parent, node)
         elif node._rkid or node._lkid:
-            print('in two one clause', node._data)
             self._del_node_one_child(node._parent, node)
         else:
-            print('in childless clause', node._data)
             self._del_node_no_children(node._parent, node)
         self._get_new_max()
-            
 
     def _del_node_no_children(self, parent, node):
-        """Delets a node that has zero kids."""
-        # import pdb; pdb.set_trace()
+        """Delete a node that has zero kids."""
         if parent:
             if parent._rkid == node:
                 parent._rkid = None
@@ -231,7 +225,7 @@ class BinarySearchTree(object):
             self._root = None
 
     def _del_node_one_child(self, parent, node):
-        """Delets a node that has one kids."""
+        """Delete a node that has one kids."""
         if parent:
             if parent._rkid == node:
                 if node._rkid:
@@ -255,7 +249,7 @@ class BinarySearchTree(object):
                 node._lkid._parent = None
 
     def _del_node_two_children(self, parent, node):
-        """Delets a node that has two kids."""
+        """Delete a node that has two kids."""
         succ = self._get_successor(node)
         self.delete(succ._data)
         succ._rkid = node._rkid
@@ -287,7 +281,7 @@ class BinarySearchTree(object):
         return current_node
 
 
-def _best_case():
+def _best_case():  # pragma no cover
     """Best-case performance case of bst search."""
     setup_code = """
 from __main__ import _best_case
@@ -301,7 +295,7 @@ new_tree.search(7)
     return(timeit.repeat(setup=setup_code, stmt=test_code, number=100000))
 
 
-def _worst_case():
+def _worst_case():  # pragma no cover
     """Worst-case performance case of bst search."""
     setup_code = """
 from __main__ import _best_case
@@ -315,7 +309,7 @@ new_tree.search(7)
     return(timeit.repeat(setup=setup_code, stmt=test_code, number=100000))
 
 
-if __name__ == '__main__':
+if __name__ == '__main__':  # pragma no cover
     print(_best_case())
     print('O(log(n))')
     print(_worst_case())

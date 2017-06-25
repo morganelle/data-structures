@@ -43,6 +43,12 @@ def tree_init_one_node_left():
 
 
 @pytest.fixture
+def tree_init_three_nodes_left():
+    """Init binarySearch uneven."""
+    return BinarySearchTree([4, 6, 5])
+
+
+@pytest.fixture
 def tree_init_one_node_right():
     """Init binarySearch for del node 1 kid right."""
     return BinarySearchTree([2, 3])
@@ -198,8 +204,14 @@ def test_insert():
     assert new_tree.contains(4) is True
 
 
+def test_insert_depth(tree_init_three_nodes_left):
+    """Test insert."""
+    tree_init_three_nodes_left.delete(7)
+    assert tree_init_three_nodes_left._max_depth is 2
+
+
 def test_breadth_first(tree_init_list):
-    """test breadth first."""
+    """Test breadth first."""
     gen = tree_init_list.breadth_first()
     assert next(gen) is 4
     assert next(gen) is 2
@@ -211,7 +223,7 @@ def test_breadth_first(tree_init_list):
 
 
 def test_pre_order(tree_init_list):
-    """test pre-order first."""
+    """Test pre-order first."""
     gen = tree_init_list.pre_order()
     assert next(gen) is 4
     assert next(gen) is 2
@@ -223,7 +235,7 @@ def test_pre_order(tree_init_list):
 
 
 def test_in_order(tree_init_list):
-    """test pre-order first."""
+    """Test pre-order first."""
     gen = tree_init_list.in_order()
     assert next(gen) is 1
     assert next(gen) is 2
@@ -235,7 +247,7 @@ def test_in_order(tree_init_list):
 
 
 def test_post_order(tree_init_list):
-    """test pre-order first"""
+    """Test pre-order first."""
     gen = tree_init_list.post_order()
     assert next(gen) is 1
     assert next(gen) is 3
@@ -246,11 +258,25 @@ def test_post_order(tree_init_list):
     assert next(gen) is 4
 
 
+def test_del_no_val(tree_init_list_longer_list):
+    """Value error raised when delete called on value not in tree."""
+    assert tree_init_list_longer_list.delete(10000) is None
+
+
 def test_del_root_no_kids(tree_init_one_node):
     """Test del root when root has zero kids."""
     assert tree_init_one_node._root._data == 3
     tree_init_one_node.delete(3)
     assert tree_init_one_node._root is None
+
+
+def test_del_node_left_kid(tree_init_three_nodes_left):
+    """Test delete on node with one left child."""
+    tree_init_three_nodes_left.delete(6)
+    assert tree_init_three_nodes_left._root._data == 4
+    assert tree_init_three_nodes_left._root._rkid._data == 5
+    assert tree_init_three_nodes_left.depth() == 1
+    assert tree_init_three_nodes_left._max_depth == 1
 
 
 def test_del_root_one_kid_right(tree_init_one_node_right):
