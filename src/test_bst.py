@@ -49,6 +49,12 @@ def tree_init_three_nodes_left():
 
 
 @pytest.fixture
+def tree_init_three_nodes_right():
+    """Init binarySearch uneven."""
+    return BinarySearchTree([4, 5, 6])
+
+
+@pytest.fixture
 def tree_init_one_node_right():
     """Init binarySearch for del node 1 kid right."""
     return BinarySearchTree([2, 3])
@@ -334,7 +340,9 @@ def test_del_node_one_kid_left(tree_init_one_node_left):
 def test_del_root_two_kids(tree_init_list):
     """Test del."""
     assert tree_init_list.contains(4)
+    assert tree_init_list.size() is 7
     tree_init_list.delete(4)
+    assert tree_init_list.size() is 6
     assert tree_init_list.contains(4) is False
     assert tree_init_list._root._data == 5
     assert tree_init_list._root._rkid._parent._data == 5
@@ -343,6 +351,7 @@ def test_del_root_two_kids(tree_init_list):
     assert tree_init_list._root._rkid._lkid is None
     assert tree_init_list.contains(7)
     tree_init_list.delete(7)
+    assert tree_init_list.size() is 5
     assert tree_init_list.contains(7) is False
     assert tree_init_list.contains(6)
     tree_init_list.delete(6)
@@ -353,7 +362,9 @@ def test_del_left_node_two_kids(tree_init_list):
     """Test del node when has two  kids."""
     assert tree_init_list.contains(2)
     assert tree_init_list._root._data == 4
+    assert tree_init_list.size() is 7
     tree_init_list.delete(2)
+    assert tree_init_list.size() is 6
     assert tree_init_list.contains(2) is False
     assert tree_init_list._root._data == 4
     assert tree_init_list._root._lkid._data == 3
@@ -364,7 +375,9 @@ def test_del_right_node_two_kids(tree_init_list):
     """Test del node when root has one right kids."""
     assert tree_init_list.contains(6)
     assert tree_init_list._root._data == 4
+    assert tree_init_list.size() is 7
     tree_init_list.delete(6)
+    assert tree_init_list.size() is 6
     assert tree_init_list.contains(6) is False
     assert tree_init_list._root._data == 4
     assert tree_init_list._root._rkid._data == 7
@@ -391,3 +404,37 @@ def test_del_left_branch(tree_init_list):
     assert tree_init_list.contains(6)
     assert tree_init_list.contains(7)
     assert tree_init_list._root._rkid._lkid is None
+
+
+def test_del_rebalance(tree_init_list):
+    """Test rebalance after delete."""
+    assert tree_init_list._rbal == 2
+    assert tree_init_list._lbal == 2
+    assert tree_init_list._max_depth == 2
+    tree_init_list.delete(4)
+    assert tree_init_list._rbal == 2
+    assert tree_init_list._lbal == 2
+    assert tree_init_list._max_depth == 2
+    tree_init_list.delete(7)
+    assert tree_init_list._rbal == 1
+    assert tree_init_list._lbal == 2
+    assert tree_init_list._max_depth == 2
+    tree_init_list.delete(6)
+    assert tree_init_list._rbal == 0
+    assert tree_init_list._lbal == 2
+    assert tree_init_list._max_depth == 2
+    tree_init_list.delete(1)
+    tree_init_list.delete(3)
+    assert tree_init_list._rbal == 0
+    assert tree_init_list._lbal == 1
+    assert tree_init_list._max_depth == 1
+    tree_init_list.delete(2)
+    assert tree_init_list._rbal == 0
+    assert tree_init_list._lbal == 0
+    assert tree_init_list._max_depth == 0
+
+
+def test_del_rebalance_right(tree_init_three_nodes_right):
+    """Test max depth on right-imbalanced tree."""
+    tree_init_three_nodes_right.delete(6)
+    assert tree_init_three_nodes_right._max_depth is 1

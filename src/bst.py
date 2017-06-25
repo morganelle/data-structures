@@ -108,6 +108,23 @@ class BinarySearchTree(object):
                 self._lbal = current_depth
         self._size += 1
 
+    def _balance_helper_breadth_first(self, node):
+        """Yield a subtree for a given node."""
+        output = []
+        nodes_to_vist = []
+        curr = node
+        if curr:
+            nodes_to_vist.append(curr)
+        while len(nodes_to_vist):
+            curr = nodes_to_vist[0]
+            if curr._lkid is not None:
+                nodes_to_vist.append(curr._lkid)
+            if curr._rkid is not None:
+                nodes_to_vist.append(curr._rkid)
+            output.append(curr._data)
+            nodes_to_vist.remove(curr)
+        return output
+
     def breadth_first(self):
         """Sort bst breadth first."""
         nodes_to_vist = []
@@ -213,6 +230,7 @@ class BinarySearchTree(object):
         else:
             self._del_node_no_children(node._parent, node)
         self._get_new_max()
+        self._size = len(self._balance_helper_breadth_first(self._root))
 
     def _del_node_no_children(self, parent, node):
         """Delete a node that has zero kids."""
