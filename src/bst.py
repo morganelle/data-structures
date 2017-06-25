@@ -298,6 +298,38 @@ class BinarySearchTree(object):
             current_node = current_node._lkid
         return current_node
 
+    def _self_balance(self):
+        """Re-balance tree after insertion or deletion."""
+        post_list = []
+        post_order_output = self.post_order()
+        while True:
+            try:
+                data = next(post_order_output)
+                post_list.append(data)
+            except StopIteration:
+                break
+        for node in post_list:
+            mini_tree = BinarySearchTree(self._balance_helper_breadth_first(self.search(node)))
+            curr_balance = mini_tree.balance()
+            if curr_balance < -1 or curr_balance > 1:
+                pass
+
+    def _self_balance_right_rotation():
+        """."""
+        pass
+
+    def _self_balance_left_rotation():
+        """."""
+        pass
+
+    def _self_balance_rl_rotation():
+        """."""
+        pass
+
+    def _self_balance_lr_rotation():
+        """."""
+        pass
+
 
 def _best_case():  # pragma no cover
     """Best-case performance case of bst search."""

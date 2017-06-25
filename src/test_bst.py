@@ -24,7 +24,7 @@ def tree_init_list_shorter_list():
 
 @pytest.fixture
 def tree_init_list_longer_list():
-    """Init with number 1-7 tree fixture we need a differenct name."""
+    """Init with number 1-7 tree fixture we need a different name."""
     return BinarySearchTree([4, 2, 3, 1, 6, 7, 5])
 
 
@@ -438,3 +438,8 @@ def test_del_rebalance_right(tree_init_three_nodes_right):
     """Test max depth on right-imbalanced tree."""
     tree_init_three_nodes_right.delete(6)
     assert tree_init_three_nodes_right._max_depth is 1
+
+
+def test_post_order_balance_output(tree_init_list):
+    """Test output of post order balance list maker."""
+    assert tree_init_list._self_balance() == [1, 3, 2, 5, 7, 6, 4]
