@@ -49,6 +49,12 @@ def tree_init_three_nodes_left():
 
 
 @pytest.fixture
+def tree_init_three_nodes_right_two():
+    """Init binarySearch uneven."""
+    return BinarySearchTree([6, 4, 5])
+
+
+@pytest.fixture
 def tree_init_three_nodes_right():
     """Init binarySearch uneven."""
     return BinarySearchTree([4, 5, 6])
@@ -70,6 +76,18 @@ def imbalanced_left_tree():
 def imbalanced_right_tree():
     """Init imbalanced tree favoring right side."""
     return BinarySearchTree((3, 4, 5, 6, 7))
+
+
+@pytest.fixture
+def left_rotation():
+    """Fixture for left rotations."""
+    return BinarySearchTree((1, 2, 3, 4, 5, 6, 7))
+
+
+@pytest.fixture
+def right_rotation():
+    """Fixture for right rotations."""
+    return BinarySearchTree((7, 6, 5, 4, 3, 2, 1))
 
 
 def test_init_error_string():
@@ -216,230 +234,285 @@ def test_insert_depth(tree_init_three_nodes_left):
     assert tree_init_three_nodes_left._max_depth is 1
 
 
-# def test_breadth_first(tree_init_list):
-#     """Test breadth first."""
-#     gen = tree_init_list.breadth_first()
-#     assert next(gen) is 3
-#     assert next(gen) is 2
-#     assert next(gen) is 5
-#     assert next(gen) is 1
-#     assert next(gen) is 4
-#     assert next(gen) is 6
-#     assert next(gen) is 7
+def test_breadth_first(tree_init_list):
+    """Test breadth first."""
+    gen = tree_init_list.breadth_first()
+    assert next(gen) is 3
+    assert next(gen) is 2
+    assert next(gen) is 5
+    assert next(gen) is 1
+    assert next(gen) is 4
+    assert next(gen) is 6
+    assert next(gen) is 7
 
 
-# def test_pre_order(tree_init_list):
-#     """Test pre-order first."""
-#     gen = tree_init_list.pre_order()
-#     assert next(gen) is 3
-#     assert next(gen) is 2
-#     assert next(gen) is 1
-#     assert next(gen) is 5
-#     assert next(gen) is 4
-#     assert next(gen) is 6
-#     assert next(gen) is 7
+def test_pre_order(tree_init_list):
+    """Test pre-order first."""
+    gen = tree_init_list.pre_order()
+    assert next(gen) is 3
+    assert next(gen) is 2
+    assert next(gen) is 1
+    assert next(gen) is 5
+    assert next(gen) is 4
+    assert next(gen) is 6
+    assert next(gen) is 7
 
 
-# def test_in_order(tree_init_list):
-#     """Test pre-order first."""
-#     gen = tree_init_list.in_order()
-#     assert next(gen) is 1
-#     assert next(gen) is 2
-#     assert next(gen) is 3
-#     assert next(gen) is 4
-#     assert next(gen) is 5
-#     assert next(gen) is 6
-#     assert next(gen) is 7
+def test_in_order(tree_init_list):
+    """Test pre-order first."""
+    gen = tree_init_list.in_order()
+    assert next(gen) is 1
+    assert next(gen) is 2
+    assert next(gen) is 3
+    assert next(gen) is 4
+    assert next(gen) is 5
+    assert next(gen) is 6
+    assert next(gen) is 7
 
 
-# def test_post_order(tree_init_list):
-#     """Test pre-order first."""
-#     gen = tree_init_list.post_order()
-#     assert next(gen) is 1
-#     assert next(gen) is 2
-#     assert next(gen) is 4
-#     assert next(gen) is 7
-#     assert next(gen) is 6
-#     assert next(gen) is 5
-#     assert next(gen) is 3
+def test_post_order(tree_init_list):
+    """Test pre-order first."""
+    gen = tree_init_list.post_order()
+    assert next(gen) is 1
+    assert next(gen) is 2
+    assert next(gen) is 4
+    assert next(gen) is 7
+    assert next(gen) is 6
+    assert next(gen) is 5
+    assert next(gen) is 3
 
 
-# def test_del_no_val(tree_init_list_longer_list):
-#     """Value error raised when delete called on value not in tree."""
-#     assert tree_init_list_longer_list.delete(10000) is None
+def test_del_no_val(tree_init_list_longer_list):
+    """Value error raised when delete called on value not in tree."""
+    assert tree_init_list_longer_list.delete(10000) is None
 
 
-# def test_del_root_no_kids(tree_init_one_node):
-#     """Test del root when root has zero kids."""
-#     assert tree_init_one_node._root._data == 3
-#     tree_init_one_node.delete(3)
-#     assert tree_init_one_node._root is None
+def test_del_root_no_kids(tree_init_one_node):
+    """Test del root when root has zero kids."""
+    assert tree_init_one_node._root._data == 3
+    tree_init_one_node.delete(3)
+    assert tree_init_one_node._root is None
 
 
-# def test_del_node_left_kid(tree_init_three_nodes_left):
-#     """Test delete on node with one left child."""
-#     tree_init_three_nodes_left.delete(6)
-#     assert tree_init_three_nodes_left._root._data == 5
-#     assert tree_init_three_nodes_left._root._rkid is None
-#     assert tree_init_three_nodes_left.depth() == 1
-#     assert tree_init_three_nodes_left._max_depth == 1
+def test_del_node_left_kid(tree_init_three_nodes_left):
+    """Test delete on node with one left child."""
+    tree_init_three_nodes_left.delete(6)
+    assert tree_init_three_nodes_left._root._data == 5
+    assert tree_init_three_nodes_left._root._rkid is None
+    assert tree_init_three_nodes_left.depth() == 1
+    assert tree_init_three_nodes_left._max_depth == 1
 
 
-# def test_del_root_one_kid_right(tree_init_one_node_right):
-#     """Test del root when root has one right kids."""
-#     assert tree_init_one_node_right._root._rkid._data == 3
-#     assert tree_init_one_node_right._root._parent is None
-#     assert tree_init_one_node_right._root._rkid._parent._data == 2
-#     tree_init_one_node_right.delete(2)
-#     assert tree_init_one_node_right._root._rkid is None
-#     assert tree_init_one_node_right._root._data == 3
-#     assert tree_init_one_node_right._root._parent is None
+def test_del_root_one_kid_right(tree_init_one_node_right):
+    """Test del root when root has one right kids."""
+    assert tree_init_one_node_right._root._rkid._data == 3
+    assert tree_init_one_node_right._root._parent is None
+    assert tree_init_one_node_right._root._rkid._parent._data == 2
+    tree_init_one_node_right.delete(2)
+    assert tree_init_one_node_right._root._rkid is None
+    assert tree_init_one_node_right._root._data == 3
+    assert tree_init_one_node_right._root._parent is None
 
 
-# def test_del_root_one_kid_left(tree_init_one_node_left):
-#     """Test del root when root has one left kids."""
-#     assert tree_init_one_node_left._root._lkid._data == 3
-#     tree_init_one_node_left.delete(4)
-#     assert tree_init_one_node_left._root._lkid is None
-#     assert tree_init_one_node_left._root._data == 3
-#     assert tree_init_one_node_left._root._parent is None
+def test_del_root_one_kid_left(tree_init_one_node_left):
+    """Test del root when root has one left kids."""
+    assert tree_init_one_node_left._root._lkid._data == 3
+    tree_init_one_node_left.delete(4)
+    assert tree_init_one_node_left._root._lkid is None
+    assert tree_init_one_node_left._root._data == 3
+    assert tree_init_one_node_left._root._parent is None
 
 
-# def test_del_left_node_check_parent(tree_init_list_longer_list):
-#     """Test to check if we reasigned parent."""
-#     tree_init_list_longer_list.delete(2)
-#     assert tree_init_list_longer_list.search(3)._parent._data == 4
-#     tree_init_list_longer_list.delete(6)
-#     assert tree_init_list_longer_list.search(7)._parent._data == 4
+def test_del_left_node_check_parent(tree_init_list_longer_list):
+    """Test to check if we reasigned parent."""
+    tree_init_list_longer_list.delete(2)
+    assert tree_init_list_longer_list.search(3)._parent._data == 4
+    tree_init_list_longer_list.delete(6)
+    assert tree_init_list_longer_list.search(7)._parent._data == 4
 
 
-# def test_del_2kids_node_check_parent(tree_init_list_shorter_list):
-#     """Test to check if we reasigned parent."""
-#     tree_init_list_shorter_list.delete(3)
-#     assert tree_init_list_shorter_list.search(1)._parent._data == 7
-#     tree_init_list_shorter_list.delete(6)
-#     assert tree_init_list_shorter_list.search(7)._parent is None
+def test_del_2kids_node_check_parent(tree_init_list_shorter_list):
+    """Test to check if we reasigned parent."""
+    tree_init_list_shorter_list.delete(3)
+    assert tree_init_list_shorter_list.search(1)._parent._data == 4
+    tree_init_list_shorter_list.delete(6)
+    assert tree_init_list_shorter_list.search(7)._parent._data == 4
 
 
-# def test_del_node_one_kid_right(tree_init_one_node_right):
-#     """Test del node when root has one right kids."""
-#     assert tree_init_one_node_right._root._rkid._data == 3
-#     tree_init_one_node_right.delete(3)
-#     assert tree_init_one_node_right._root._rkid is None
-#     assert tree_init_one_node_right._root._data == 2
+def test_del_node_one_kid_right(tree_init_one_node_right):
+    """Test del node when root has one right kids."""
+    assert tree_init_one_node_right._root._rkid._data == 3
+    tree_init_one_node_right.delete(3)
+    assert tree_init_one_node_right._root._rkid is None
+    assert tree_init_one_node_right._root._data == 2
 
 
-# def test_del_node_one_kid_left(tree_init_one_node_left):
-#     """Test del node when root has one left kids."""
-#     assert tree_init_one_node_left._root._lkid._data == 3
-#     tree_init_one_node_left.delete(3)
-#     assert tree_init_one_node_left._root._lkid is None
-#     assert tree_init_one_node_left._root._data == 4
+def test_del_node_one_kid_left(tree_init_one_node_left):
+    """Test del node when root has one left kids."""
+    assert tree_init_one_node_left._root._lkid._data == 3
+    tree_init_one_node_left.delete(3)
+    assert tree_init_one_node_left._root._lkid is None
+    assert tree_init_one_node_left._root._data == 4
 
 
-# def test_del_root_two_kids(tree_init_list):
-#     """Test del."""
-#     assert tree_init_list.contains(4)
-#     assert tree_init_list.size() is 7
-#     tree_init_list.delete(4)
-#     assert tree_init_list.size() is 6
-#     assert tree_init_list.contains(4) is False
-#     assert tree_init_list._root._data == 5
-#     assert tree_init_list._root._rkid._parent._data == 5
-#     assert tree_init_list._root._lkid._data == 2
-#     assert tree_init_list._root._rkid._data == 6
-#     assert tree_init_list._root._rkid._lkid is None
-#     assert tree_init_list.contains(7)
-#     tree_init_list.delete(7)
-#     assert tree_init_list.size() is 5
-#     assert tree_init_list.contains(7) is False
-#     assert tree_init_list.contains(6)
-#     tree_init_list.delete(6)
-#     assert tree_init_list.contains(6) is False
+def test_del_root_two_kids(tree_init_list):
+    """Test del."""
+    assert tree_init_list.contains(4)
+    assert tree_init_list.size() is 7
+    tree_init_list.delete(4)
+    assert tree_init_list.size() is 6
+    assert tree_init_list.contains(4) is False
+    assert tree_init_list._root._data == 3
+    assert tree_init_list._root._rkid._parent._data == 3
+    assert tree_init_list._root._lkid._data == 2
+    assert tree_init_list._root._rkid._data == 6
+    assert tree_init_list._root._rkid._lkid._data == 5
+    assert tree_init_list.contains(7)
+    tree_init_list.delete(7)
+    assert tree_init_list.size() is 5
+    assert tree_init_list.contains(7) is False
+    assert tree_init_list.contains(6)
+    tree_init_list.delete(6)
+    assert tree_init_list.contains(6) is False
 
 
-# def test_del_left_node_two_kids(tree_init_list):
-#     """Test del node when has two  kids."""
-#     assert tree_init_list.contains(2)
-#     assert tree_init_list._root._data == 4
-#     assert tree_init_list.size() is 7
-#     tree_init_list.delete(2)
-#     assert tree_init_list.size() is 6
-#     assert tree_init_list.contains(2) is False
-#     assert tree_init_list._root._data == 4
-#     assert tree_init_list._root._lkid._data == 3
-#     assert tree_init_list._root._lkid._lkid._data == 1
+def test_del_left_node_two_kids(tree_init_list):
+    """Test del node when has two  kids."""
+    assert tree_init_list.contains(2)
+    assert tree_init_list._root._data == 3
+    assert tree_init_list.size() is 7
+    tree_init_list.delete(2)
+    assert tree_init_list.size() is 6
+    assert tree_init_list.contains(2) is False
+    assert tree_init_list._root._data == 5
+    assert tree_init_list._root._lkid._data == 3
+    assert tree_init_list._root._lkid._lkid._data == 1
 
 
-# def test_del_right_node_two_kids(tree_init_list):
-#     """Test del node when root has one right kids."""
-#     assert tree_init_list.contains(6)
-#     assert tree_init_list._root._data == 4
-#     assert tree_init_list.size() is 7
-#     tree_init_list.delete(6)
-#     assert tree_init_list.size() is 6
-#     assert tree_init_list.contains(6) is False
-#     assert tree_init_list._root._data == 4
-#     assert tree_init_list._root._rkid._data == 7
-#     assert tree_init_list._root._rkid._rkid is None
+def test_del_right_node_two_kids(tree_init_list):
+    """Test del node when root has one right kids."""
+    assert tree_init_list.contains(6)
+    assert tree_init_list.size() is 7
+    tree_init_list.delete(6)
+    assert tree_init_list.size() is 6
+    assert tree_init_list.contains(6) is False
+    assert tree_init_list._root._data == 3
+    assert tree_init_list._root._rkid._data == 5
+    assert tree_init_list._root._rkid._rkid._data == 7
 
 
-# def test_del_right_branch(tree_init_list):
-#     """Test del on branch node right."""
-#     assert tree_init_list.contains(1)
-#     assert tree_init_list._root._data == 4
-#     tree_init_list.delete(1)
-#     assert tree_init_list.contains(1) is False
-#     assert tree_init_list.contains(2)
-#     assert tree_init_list.contains(3)
-#     assert tree_init_list._root._lkid._lkid is None
+def test_del_right_branch(tree_init_list):
+    """Test del on branch node right."""
+    assert tree_init_list.contains(1)
+    tree_init_list.delete(1)
+    assert tree_init_list.contains(1) is False
+    assert tree_init_list.contains(2)
+    assert tree_init_list.contains(3)
+    assert tree_init_list._root._data == 5
+    assert tree_init_list._root._lkid._lkid._data == 2
 
 
-# def test_del_left_branch(tree_init_list):
-#     """Test del on branch node left."""
-#     assert tree_init_list.contains(5)
-#     assert tree_init_list._root._data == 4
-#     tree_init_list.delete(5)
-#     assert tree_init_list.contains(5) is False
-#     assert tree_init_list.contains(6)
-#     assert tree_init_list.contains(7)
-#     assert tree_init_list._root._rkid._lkid is None
+def test_del_left_branch(tree_init_list):
+    """Test del on branch node left."""
+    assert tree_init_list.contains(5)
+    assert tree_init_list._root._data == 3
+    tree_init_list.delete(5)
+    assert tree_init_list.contains(5) is False
+    assert tree_init_list.contains(6)
+    assert tree_init_list.contains(7)
+    assert tree_init_list._root._rkid._lkid._data == 4
 
 
-# def test_del_rebalance(tree_init_list):
-#     """Test rebalance after delete."""
-#     assert tree_init_list._rbal == 2
-#     assert tree_init_list._lbal == 2
-#     assert tree_init_list._max_depth == 2
-#     tree_init_list.delete(4)
-#     assert tree_init_list._rbal == 2
-#     assert tree_init_list._lbal == 2
-#     assert tree_init_list._max_depth == 2
-#     tree_init_list.delete(7)
-#     assert tree_init_list._rbal == 1
-#     assert tree_init_list._lbal == 2
-#     assert tree_init_list._max_depth == 2
-#     tree_init_list.delete(6)
-#     assert tree_init_list._rbal == 0
-#     assert tree_init_list._lbal == 2
-#     assert tree_init_list._max_depth == 2
-#     tree_init_list.delete(1)
-#     tree_init_list.delete(3)
-#     assert tree_init_list._rbal == 0
-#     assert tree_init_list._lbal == 1
-#     assert tree_init_list._max_depth == 1
-#     tree_init_list.delete(2)
-#     assert tree_init_list._rbal == 0
-#     assert tree_init_list._lbal == 0
-#     assert tree_init_list._max_depth == 0
+def test_del_rebalance(tree_init_list):
+    """Test rebalance after delete."""
+    assert tree_init_list._rbal == 3
+    assert tree_init_list._lbal == 2
+    assert tree_init_list._max_depth == 3
+    tree_init_list.delete(4)
+    assert tree_init_list._rbal == 2
+    assert tree_init_list._lbal == 2
+    assert tree_init_list._max_depth == 2
+    tree_init_list.delete(7)
+    assert tree_init_list._rbal == 2
+    assert tree_init_list._lbal == 2
+    assert tree_init_list._max_depth == 2
+    tree_init_list.delete(6)
+    assert tree_init_list._rbal == 1
+    assert tree_init_list._lbal == 2
+    assert tree_init_list._max_depth == 2
+    tree_init_list.delete(1)
+    tree_init_list.delete(3)
+    assert tree_init_list._root._data == 5
+    assert tree_init_list._rbal == 0
+    assert tree_init_list._lbal == 1
+    assert tree_init_list._max_depth == 1
+    tree_init_list.delete(2)
+    assert tree_init_list._rbal == 0
+    assert tree_init_list._lbal == 0
+    assert tree_init_list._max_depth == 0
 
 
-# def test_del_rebalance_right(tree_init_three_nodes_right):
-#     """Test max depth on right-imbalanced tree."""
-#     tree_init_three_nodes_right.delete(6)
-#     assert tree_init_three_nodes_right._max_depth is 1
+def test_del_rebalance_right(tree_init_three_nodes_right):
+    """Test max depth on right-imbalanced tree."""
+    tree_init_three_nodes_right.delete(6)
+    assert tree_init_three_nodes_right._max_depth is 1
 
 
-# def test_post_order_balance_output(tree_init_list):
-#     """Test output of post order balance list maker."""
-#     assert tree_init_list._self_balance() == [1, 3, 2, 5, 7, 6, 4]
+def test_self_balance(left_rotation):
+    """Test self-balance private method."""
+    assert left_rotation._root._data == 4
+    assert left_rotation._lbal == 2
+    assert left_rotation._rbal == 2
+    assert left_rotation._max_depth == 2
+
+
+def test_self_balance_left_right_rotation(tree_init_three_nodes_right_two):
+    """Test left-right rotation."""
+    assert tree_init_three_nodes_right_two._root._data == 5
+    assert tree_init_three_nodes_right_two._root._rkid._data == 6
+    assert tree_init_three_nodes_right_two._root._lkid._data == 4
+    assert tree_init_three_nodes_right_two._lbal == 1
+    assert tree_init_three_nodes_right_two._rbal == 1
+    assert tree_init_three_nodes_right_two._max_depth == 1
+
+
+def test_self_balance_right_left_rotation(tree_init_three_nodes_left):
+    """Test right-left rotation."""
+    assert tree_init_three_nodes_left._root._data == 5
+    assert tree_init_three_nodes_left._root._rkid._data == 6
+    assert tree_init_three_nodes_left._root._lkid._data == 4
+    assert tree_init_three_nodes_left._lbal == 1
+    assert tree_init_three_nodes_left._rbal == 1
+    assert tree_init_three_nodes_left._max_depth == 1
+
+
+def test_self_balance_right_1_kid(right_rotation):
+    """Test right rotation on node with one child node."""
+    assert right_rotation._root._data == 4
+    assert right_rotation._lbal == 2
+    assert right_rotation._rbal == 2
+    assert right_rotation._max_depth == 2
+
+
+def test_self_balance_right_2_kids(right_rotation):
+    """Test right rotation on node with two child nodes."""
+    assert right_rotation._root._data == 4
+    assert right_rotation._lbal == 2
+    assert right_rotation._rbal == 2
+    assert right_rotation._max_depth == 2
+
+
+def test_self_balance_left_1_kid(left_rotation):
+    """Test left rotation on node with one child node."""
+    assert left_rotation._root._data == 4
+    assert left_rotation._lbal == 2
+    assert left_rotation._rbal == 2
+    assert left_rotation._max_depth == 2
+
+
+def test_self_balance_left_2_kid(left_rotation):
+    """Test left rotation on node with two child nodes."""
+    assert left_rotation._root._data == 4
+    assert left_rotation._lbal == 2
+    assert left_rotation._rbal == 2
+    assert left_rotation._max_depth == 2

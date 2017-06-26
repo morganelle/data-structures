@@ -4,6 +4,7 @@ Authors: Morgan Nomura and Sean Beseler
 All modules and tests located in src directory.
 
 ## Binary Search Tree
+Self-balancing binary search tree using AVL balancing.
 - module: bst.py
 - test: test_bst.py
 - methods:

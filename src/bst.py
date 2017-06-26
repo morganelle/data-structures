@@ -4,10 +4,10 @@ import timeit
 
 
 class Node(object):
-    """Initialize a node object."""
+    """Node object methods."""
 
     def __init__(self, data):
-        """."""
+        """Instantiate a node object."""
         self._data = data
         self._parent = None
         self._rkid = None
@@ -15,7 +15,7 @@ class Node(object):
 
 
 class BinarySearchTree(object):
-    """Initialize a binary search tree object."""
+    """Binary search tree object methods and attributes."""
 
     def __init__(self, itter=None):
         """Init a binary search tree with no data or iterable."""
@@ -111,8 +111,6 @@ class BinarySearchTree(object):
 
     def _insert_helper(self, data):
         """Insert a new value into binary search tree."""
-        if type(data) not in [int, float]:
-            raise TypeError('This binary search tree only accepts ints and floats as values.')
         current_node = self._root
         current_depth = 0
         new_node = Node(data)
@@ -247,7 +245,6 @@ class BinarySearchTree(object):
 
     def _get_new_max(self):
         """Get the new max depth."""
-        # import pdb; pdb.set_trace()
         right = 0
         left = 0
         if self._root:
@@ -255,11 +252,8 @@ class BinarySearchTree(object):
                 right = self._new_depth(self._root._rkid, 1)
             if self._root._lkid:
                 left = self._new_depth(self._root._lkid, 1)
-            # import pdb; pdb.set_trace()
-            if right < self._rbal:
-                self._rbal = right
-            if left < self._lbal:
-                self._lbal = left
+            self._rbal = right
+            self._lbal = left
             if right > left:
                 if right < self._max_depth:
                     self._max_depth = right
@@ -301,7 +295,7 @@ class BinarySearchTree(object):
                 else:
                     parent._rkid = node._lkid
                     node._lkid._parent = parent
-            if node._rkid:
+            elif node._rkid:
                 parent._lkid = node._rkid
                 node._rkid._parent = parent
             else:
@@ -349,7 +343,6 @@ class BinarySearchTree(object):
 
     def _self_balance(self):
         """Re-balance tree after insertion or deletion."""
-        # import pdb; pdb.set_trace()
         post_list = []
         post_order_output = self.post_order()
         while True:
@@ -389,14 +382,6 @@ class BinarySearchTree(object):
                             self._self_balance_right_rotation(self.search(node_data))
                     else:
                         self._self_balance_left_right_rotation(self.search(node_data))
-                #     if mini_tree._root._lkid._lkid and mini_tree._root._lkid._rkid:
-                #         self._self_balance_lr_rotation(self.search(node_data))
-                #     else:
-                #         self._self_balance_right_rotation(self.search(node_data))
-                # elif mini_tree._root._rkid._lkid and mini_tree._root._rkid._rkid:
-                #     self._self_balance_rl_rotation(self.search(node_data))
-                # else:
-                #     self._self_balance_left_rotation(self.search(node_data))
         self._get_new_max()
 
     def _self_balance_right_rotation(self, node):
@@ -427,7 +412,6 @@ class BinarySearchTree(object):
 
     def _self_balance_left_rotation(self, node):
         """Balance sub-tree via left rotation."""
-        # import pdb; pdb.set_trace()
         right_kid = node._rkid
         if node._rkid._lkid:
             grand_kid = node._rkid._lkid
@@ -452,7 +436,7 @@ class BinarySearchTree(object):
             node._parent = right_kid
             node._rkid = None
 
-    def _self_balance_left_two_kid_rotation(self, node):
+    def _self_balance_right_two_kid_rotation(self, node):
         """Balance sub-tree with two kids via rotation."""
         left_kid = node._lkid
         grand_kid = left_kid._rkid
@@ -461,8 +445,14 @@ class BinarySearchTree(object):
         grand_kid._parent = node
         node._lkid = grand_kid
         node._parent = left_kid
+        if node == self._root:
+            self._root = left_kid
+        elif left_kid == left_kid._parent._rkid:
+            left_kid._parent._rkid = left_kid
+        else:
+            left_kid._parent._lkid = left_kid
 
-    def _self_balance_right_two_kid_rotation(self, node):
+    def _self_balance_left_two_kid_rotation(self, node):
         """Balance sub-tree with two kids via right rotation."""
         right_kid = node._rkid
         grand_kid = right_kid._lkid
@@ -471,6 +461,12 @@ class BinarySearchTree(object):
         grand_kid._parent = node
         node._rkid = grand_kid
         node._parent = right_kid
+        if node == self._root:
+            self._root = right_kid
+        elif right_kid == right_kid._parent._lkid:
+            right_kid._parent._lkid = right_kid
+        else:
+            right_kid._parent._rkid = right_kid
 
     def _self_balance_left_right_rotation(self, node):
         """Balance sub-tree via left-right rotation."""
@@ -492,6 +488,10 @@ class BinarySearchTree(object):
         left_kid._rkid = node
         if node == self._root:
             self._root = left_kid
+        elif left_kid == left_kid._parent._rkid:
+            left_kid._parent._rkid = left_kid
+        else:
+            left_kid._parent._lkid = left_kid
 
     def _self_balance_right_left_rotation(self, node):
         """Balance sub-tree via left-right rotation."""
@@ -513,6 +513,10 @@ class BinarySearchTree(object):
         right_kid._lkid = node
         if node == self._root:
             self._root = right_kid
+        elif right_kid == right_kid._parent._lkid:
+            right_kid._parent._lkid = right_kid
+        else:
+            right_kid._parent._rkid = right_kid
 
 
 def _best_case():  # pragma no cover
