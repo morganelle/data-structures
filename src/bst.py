@@ -4,10 +4,10 @@ import timeit
 
 
 class Node(object):
-    """Initialize a node object."""
+    """Node object methods."""
 
     def __init__(self, data):
-        """."""
+        """Instantiate a node object."""
         self._data = data
         self._parent = None
         self._rkid = None
@@ -15,7 +15,7 @@ class Node(object):
 
 
 class BinarySearchTree(object):
-    """Initialize a binary search tree object."""
+    """Binary search tree object methods and attributes."""
 
     def __init__(self, itter=None):
         """Init a binary search tree with no data or iterable."""
@@ -252,7 +252,7 @@ class BinarySearchTree(object):
                 else:
                     parent._rkid = node._lkid
                     node._lkid._parent = parent
-            if node._rkid:
+            elif node._rkid:
                 parent._lkid = node._rkid
                 node._rkid._parent = parent
             else:
