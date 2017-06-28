@@ -23,7 +23,7 @@ class BinarySearchTree(object):
         self._lbal = 0
         self._max_depth = 0
         self._root = None
-        if itter is not None:
+        if itter:
             if type(itter) not in [tuple, list, int, float]:
                 raise TypeError('Please enter an iterable or number.')
             if type(itter) in [int, float]:
@@ -46,16 +46,17 @@ class BinarySearchTree(object):
 
     def search(self, val):
         """Search for a value and return a node if found."""
+        if type(val) not in [int, float]:
+            raise TypeError('This tree accepts numbers only.')
         current_node = self._root
-        while True:
-            if current_node is None:
-                return None
+        while current_node:
             if val == current_node._data:
                 return current_node
             if val > current_node._data:
                 current_node = current_node._rkid
             else:
                 current_node = current_node._lkid
+        return None
 
     def contains(self, val):
         """Evaluate whether a value is in a binary search tree."""
@@ -63,47 +64,49 @@ class BinarySearchTree(object):
             return False
         return True
 
-    def insert(self, data):
+    def insert(self, val):
         """Insert a new value into binary search tree."""
-        if type(data) not in [int, float]:
-            raise TypeError('This binary search tree only accepts ints and floats as values.')
-        current_node = self._root
-        current_depth = 0
-        new_node = Node(data)
-        if self._root is None:
+        if type(val) not in [int, float]:
+            raise TypeError('This tree accepts numbers only.')
+        if self.contains(val):
+            raise ValueError('Node already in tree.')
+        new_node = Node(val)
+        if self._size == 0:
             self._root = new_node
-            self._depth = 1
+            self._max_depth = 1
+            self._rbal = 1
+            self._lbal = 1
         else:
+            current_depth = 1
             current_node = self._root
-            prev_node = current_node
-            current_depth = 0
-            if data > self._root._data:
-                dir = 'right'
-            else:
-                dir = 'left'
-            while True:
+            while val is not current_node._data:
                 current_depth += 1
-                if data > current_node._data:
-                    prev_node = current_node
-                    current_node = current_node._rkid
-                    if current_node is None:
-                        prev_node._rkid = new_node
+                if val < current_node._data:
+                    if current_node._lkid:
+                        current_node = current_node._lkid
+                    else:
+                        current_node._lkid = new_node
+                        new_node._parent = current_node
+                        self._update_balances_and_depth(current_depth, val)
                         break
-                elif data < current_node._data:
-                    prev_node = current_node
-                    current_node = current_node._lkid
-                    if current_node is None:
-                        prev_node._lkid = new_node
+                elif val > current_node._data:
+                    if current_node._rkid:
+                        current_node = current_node._rkid
+                    else:
+                        current_node._rkid = new_node
+                        new_node._parent = current_node
+                        self._update_balances_and_depth(current_depth, val)
                         break
-                else:
-                    raise ValueError('Can\'t insert a node with the same value as another node.')
-            if current_depth > self._max_depth:
-                self._max_depth = current_depth
-            if dir == 'right' and self._rbal < current_depth:
-                self._rbal = current_depth
-            if dir == 'left' and self._lbal < current_depth:
-                self._lbal = current_depth
         self._size += 1
+
+    def _update_balances_and_depth(self, current_depth, val):
+        """Increment left/right balance on insert."""
+        if current_depth > self._max_depth:
+            self._max_depth = current_depth
+        if val > self._root._data and self._rbal < current_depth:
+            self._rbal = current_depth
+        elif val < self._root._data and self._lbal < current_depth:
+            self._lbal = current_depth
 
 
 def _best_case():
