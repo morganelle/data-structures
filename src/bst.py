@@ -60,9 +60,7 @@ class BinarySearchTree(object):
 
     def contains(self, val):
         """Evaluate whether a value is in a binary search tree."""
-        if self.search(val) is None:
-            return False
-        return True
+        return not not self.search(val)
 
     def insert(self, val):
         """Insert a new value into binary search tree."""
