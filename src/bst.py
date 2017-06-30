@@ -86,7 +86,6 @@ class BinarySearchTree(object):
                         current_node._lkid = new_node
                         new_node._parent = current_node
                         self._update_balances_and_depth(current_depth, val)
-                        break
                 elif val > current_node._data:
                     if current_node._rkid:
                         current_node = current_node._rkid
@@ -94,7 +93,6 @@ class BinarySearchTree(object):
                         current_node._rkid = new_node
                         new_node._parent = current_node
                         self._update_balances_and_depth(current_depth, val)
-                        break
         self._size += 1
 
     def _update_balances_and_depth(self, current_depth, val):
