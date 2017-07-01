@@ -23,7 +23,7 @@ class BinarySearchTree(object):
         self._lbal = 0
         self._max_depth = 0
         self._root = None
-        if itter is not None:
+        if itter:
             if type(itter) not in [tuple, list, int, float]:
                 raise TypeError('Please enter an iterable or number.')
             if type(itter) in [int, float]:
