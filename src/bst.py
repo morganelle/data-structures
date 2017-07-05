@@ -7,7 +7,7 @@ class Node(object):
     """Initialize a node object."""
 
     def __init__(self, data):
-        """Init a node."""
+        """."""
         self._data = data
         self._rkid = None
         self._lkid = None
@@ -52,7 +52,7 @@ class BinarySearchTree(object):
         while current_node:
             if val == current_node._data:
                 return current_node
-            elif val > current_node._data:
+            if val > current_node._data:
                 current_node = current_node._rkid
             else:
                 current_node = current_node._lkid
