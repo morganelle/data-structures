@@ -110,27 +110,27 @@ def test_init_list_float():
     new_tree = BinarySearchTree(2.5)
     assert new_tree._root._data == 2.5
     assert new_tree._size == 1
-    assert new_tree._rbal == 0
-    assert new_tree._lbal == 0
-    assert new_tree._max_depth == 0
+    assert new_tree._rbal == 1
+    assert new_tree._lbal == 1
+    assert new_tree._max_depth == 1
 
 
 def test_init_list():
     """Test init with iterable."""
     new_tree = BinarySearchTree([2, 1, 3])
     assert new_tree._size == 3
-    assert new_tree._rbal == 1
-    assert new_tree._lbal == 1
-    assert new_tree._max_depth == 1
+    assert new_tree._rbal == 2
+    assert new_tree._lbal == 2
+    assert new_tree._max_depth == 2
 
 
 def test_init_tuple():
     """Test init with iterable."""
     new_tree = BinarySearchTree((2, 1, 3))
     assert new_tree._size == 3
-    assert new_tree._rbal == 1
-    assert new_tree._lbal == 1
-    assert new_tree._max_depth == 1
+    assert new_tree._rbal == 2
+    assert new_tree._lbal == 2
+    assert new_tree._max_depth == 2
 
 
 def test_size():
@@ -164,13 +164,13 @@ def test_depth():
     new_tree = BinarySearchTree()
     assert new_tree.depth() == 0
     new_tree.insert(2)
-    assert new_tree.depth() == 0
+    assert new_tree.depth() == 1
     new_tree.insert(1)
-    assert new_tree.depth() == 1
-    new_tree.insert(3)
-    assert new_tree.depth() == 1
-    new_tree.insert(4)
     assert new_tree.depth() == 2
+    new_tree.insert(3)
+    assert new_tree.depth() == 2
+    new_tree.insert(4)
+    assert new_tree.depth() == 3
 
 
 def test_search():
@@ -228,10 +228,10 @@ def test_insert():
     assert new_tree.contains(4) is True
 
 
-def test_insert_depth(tree_init_three_nodes_left):
+def test_delete_depth(tree_init_three_nodes_left):
     """Test insert."""
     tree_init_three_nodes_left.delete(7)
-    assert tree_init_three_nodes_left._max_depth is 1
+    assert tree_init_three_nodes_left._max_depth is 2
 
 
 def test_breadth_first(tree_init_list):
@@ -299,8 +299,10 @@ def test_del_node_left_kid(tree_init_three_nodes_left):
     tree_init_three_nodes_left.delete(6)
     assert tree_init_three_nodes_left._root._data == 5
     assert tree_init_three_nodes_left._root._rkid is None
-    assert tree_init_three_nodes_left.depth() == 1
-    assert tree_init_three_nodes_left._max_depth == 1
+    assert tree_init_three_nodes_left._rbal == 1
+    assert tree_init_three_nodes_left._lbal == 2
+    assert tree_init_three_nodes_left.depth() == 2
+    assert tree_init_three_nodes_left._max_depth == 2
 
 
 def test_del_root_one_kid_right(tree_init_one_node_right):
@@ -425,45 +427,45 @@ def test_del_left_branch(tree_init_list):
 
 def test_del_rebalance(tree_init_list):
     """Test rebalance after delete."""
-    assert tree_init_list._rbal == 3
-    assert tree_init_list._lbal == 2
-    assert tree_init_list._max_depth == 3
+    assert tree_init_list._rbal == 4
+    assert tree_init_list._lbal == 3
+    assert tree_init_list._max_depth == 4
     tree_init_list.delete(4)
-    assert tree_init_list._rbal == 2
-    assert tree_init_list._lbal == 2
-    assert tree_init_list._max_depth == 2
+    assert tree_init_list._rbal == 3
+    assert tree_init_list._lbal == 3
+    assert tree_init_list._max_depth == 3
     tree_init_list.delete(7)
-    assert tree_init_list._rbal == 2
-    assert tree_init_list._lbal == 2
-    assert tree_init_list._max_depth == 2
+    assert tree_init_list._rbal == 3
+    assert tree_init_list._lbal == 3
+    assert tree_init_list._max_depth == 3
     tree_init_list.delete(6)
-    assert tree_init_list._rbal == 1
-    assert tree_init_list._lbal == 2
-    assert tree_init_list._max_depth == 2
+    assert tree_init_list._rbal == 2
+    assert tree_init_list._lbal == 3
+    assert tree_init_list._max_depth == 3
     tree_init_list.delete(1)
     tree_init_list.delete(3)
     assert tree_init_list._root._data == 5
-    assert tree_init_list._rbal == 0
+    assert tree_init_list._rbal == 1
+    assert tree_init_list._lbal == 2
+    assert tree_init_list._max_depth == 2
+    tree_init_list.delete(2)
+    assert tree_init_list._rbal == 1
     assert tree_init_list._lbal == 1
     assert tree_init_list._max_depth == 1
-    tree_init_list.delete(2)
-    assert tree_init_list._rbal == 0
-    assert tree_init_list._lbal == 0
-    assert tree_init_list._max_depth == 0
 
 
 def test_del_rebalance_right(tree_init_three_nodes_right):
     """Test max depth on right-imbalanced tree."""
     tree_init_three_nodes_right.delete(6)
-    assert tree_init_three_nodes_right._max_depth is 1
+    assert tree_init_three_nodes_right._max_depth is 2
 
 
 def test_self_balance(left_rotation):
     """Test self-balance private method."""
     assert left_rotation._root._data == 4
-    assert left_rotation._lbal == 2
-    assert left_rotation._rbal == 2
-    assert left_rotation._max_depth == 2
+    assert left_rotation._lbal == 3
+    assert left_rotation._rbal == 3
+    assert left_rotation._max_depth == 3
 
 
 def test_self_balance_left_right_rotation(tree_init_three_nodes_right_two):
@@ -471,9 +473,9 @@ def test_self_balance_left_right_rotation(tree_init_three_nodes_right_two):
     assert tree_init_three_nodes_right_two._root._data == 5
     assert tree_init_three_nodes_right_two._root._rkid._data == 6
     assert tree_init_three_nodes_right_two._root._lkid._data == 4
-    assert tree_init_three_nodes_right_two._lbal == 1
-    assert tree_init_three_nodes_right_two._rbal == 1
-    assert tree_init_three_nodes_right_two._max_depth == 1
+    assert tree_init_three_nodes_right_two._lbal == 2
+    assert tree_init_three_nodes_right_two._rbal == 2
+    assert tree_init_three_nodes_right_two._max_depth == 2
 
 
 def test_self_balance_right_left_rotation(tree_init_three_nodes_left):
@@ -481,38 +483,38 @@ def test_self_balance_right_left_rotation(tree_init_three_nodes_left):
     assert tree_init_three_nodes_left._root._data == 5
     assert tree_init_three_nodes_left._root._rkid._data == 6
     assert tree_init_three_nodes_left._root._lkid._data == 4
-    assert tree_init_three_nodes_left._lbal == 1
-    assert tree_init_three_nodes_left._rbal == 1
-    assert tree_init_three_nodes_left._max_depth == 1
+    assert tree_init_three_nodes_left._lbal == 2
+    assert tree_init_three_nodes_left._rbal == 2
+    assert tree_init_three_nodes_left._max_depth == 2
 
 
 def test_self_balance_right_1_kid(right_rotation):
     """Test right rotation on node with one child node."""
     assert right_rotation._root._data == 4
-    assert right_rotation._lbal == 2
-    assert right_rotation._rbal == 2
-    assert right_rotation._max_depth == 2
+    assert right_rotation._lbal == 3
+    assert right_rotation._rbal == 3
+    assert right_rotation._max_depth == 3
 
 
 def test_self_balance_right_2_kids(right_rotation):
     """Test right rotation on node with two child nodes."""
     assert right_rotation._root._data == 4
-    assert right_rotation._lbal == 2
-    assert right_rotation._rbal == 2
-    assert right_rotation._max_depth == 2
+    assert right_rotation._lbal == 3
+    assert right_rotation._rbal == 3
+    assert right_rotation._max_depth == 3
 
 
 def test_self_balance_left_1_kid(left_rotation):
     """Test left rotation on node with one child node."""
     assert left_rotation._root._data == 4
-    assert left_rotation._lbal == 2
-    assert left_rotation._rbal == 2
-    assert left_rotation._max_depth == 2
+    assert left_rotation._lbal == 3
+    assert left_rotation._rbal == 3
+    assert left_rotation._max_depth == 3
 
 
 def test_self_balance_left_2_kid(left_rotation):
     """Test left rotation on node with two child nodes."""
     assert left_rotation._root._data == 4
-    assert left_rotation._lbal == 2
-    assert left_rotation._rbal == 2
-    assert left_rotation._max_depth == 2
+    assert left_rotation._lbal == 3
+    assert left_rotation._rbal == 3
+    assert left_rotation._max_depth == 3

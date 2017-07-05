@@ -24,7 +24,7 @@ class BinarySearchTree(object):
         self._lbal = 0
         self._max_depth = 0
         self._root = None
-        if itter is not None:
+        if itter:
             if type(itter) not in [tuple, list, int, float]:
                 raise TypeError('Please enter an iterable or number.')
             if type(itter) in [int, float]:
@@ -47,108 +47,87 @@ class BinarySearchTree(object):
 
     def search(self, val):
         """Search for a value and return a node if found."""
+        if type(val) not in [int, float]:
+            raise TypeError('This tree accepts numbers only.')
         current_node = self._root
-        while True:
-            if current_node is None:
-                return None
+        while current_node:
             if val == current_node._data:
                 return current_node
             if val > current_node._data:
                 current_node = current_node._rkid
             else:
                 current_node = current_node._lkid
+        return
 
     def contains(self, val):
         """Evaluate whether a value is in a binary search tree."""
-        if self.search(val) is None:
-            return False
-        return True
+        return not not self.search(val)
 
-    def insert(self, data):
+    def insert(self, val):
         """Insert a new value into binary search tree."""
-        if type(data) not in [int, float]:
-            raise TypeError('This binary search tree only accepts ints and floats as values.')
-        current_node = self._root
-        current_depth = 0
-        new_node = Node(data)
-        if self._root is None:
+        if type(val) not in [int, float]:
+            raise TypeError('This tree accepts numbers only.')
+        if self.contains(val):
+            raise ValueError('Node already in tree.')
+        new_node = Node(val)
+        if self._size == 0:
             self._root = new_node
-            self._depth = 1
+            self._max_depth = 1
+            self._rbal = 1
+            self._lbal = 1
         else:
+            current_depth = 1
             current_node = self._root
-            prev_node = current_node
-            current_depth = 0
-            if data > self._root._data:
-                dir = 'right'
-            else:
-                dir = 'left'
-            while True:
+            while val is not current_node._data:
                 current_depth += 1
-                if data > current_node._data:
-                    prev_node = current_node
-                    current_node = current_node._rkid
-                    if current_node is None:
-                        prev_node._rkid = new_node
-                        new_node._parent = prev_node
-                        break
-                elif data < current_node._data:
-                    prev_node = current_node
-                    current_node = current_node._lkid
-                    if current_node is None:
-                        prev_node._lkid = new_node
-                        new_node._parent = prev_node
-                        break
-                else:
-                    raise ValueError('Can\'t insert a node with the same value as another node.')
-            if current_depth > self._max_depth:
-                self._max_depth = current_depth
-            if dir == 'right' and self._rbal < current_depth:
-                self._rbal = current_depth
-            if dir == 'left' and self._lbal < current_depth:
-                self._lbal = current_depth
+                if val < current_node._data:
+                    if current_node._lkid:
+                        current_node = current_node._lkid
+                    else:
+                        current_node._lkid = new_node
+                        new_node._parent = current_node
+                        self._get_new_max()
+                elif val > current_node._data:
+                    if current_node._rkid:
+                        current_node = current_node._rkid
+                    else:
+                        current_node._rkid = new_node
+                        new_node._parent = current_node
+                        self._get_new_max()
         self._size += 1
         self._self_balance()
 
-    def _insert_helper(self, data):
+    def _insert_helper(self, val):
         """Insert a new value into binary search tree."""
-        current_node = self._root
-        current_depth = 0
-        new_node = Node(data)
-        if self._root is None:
+        if type(val) not in [int, float]:
+            raise TypeError('This tree accepts numbers only.')
+        if self.contains(val):
+            raise ValueError('Node already in tree.')
+        new_node = Node(val)
+        if self._size == 0:
             self._root = new_node
-            self._depth = 1
+            self._max_depth = 1
+            self._rbal = 1
+            self._lbal = 1
         else:
+            current_depth = 1
             current_node = self._root
-            prev_node = current_node
-            current_depth = 0
-            if data > self._root._data:
-                dir = 'right'
-            else:
-                dir = 'left'
-            while True:
+            while val is not current_node._data:
                 current_depth += 1
-                if data > current_node._data:
-                    prev_node = current_node
-                    current_node = current_node._rkid
-                    if current_node is None:
-                        prev_node._rkid = new_node
-                        new_node._parent = prev_node
-                        break
-                elif data < current_node._data:
-                    prev_node = current_node
-                    current_node = current_node._lkid
-                    if current_node is None:
-                        prev_node._lkid = new_node
-                        new_node._parent = prev_node
-                        break
-                else:
-                    raise ValueError('Can\'t insert a node with the same value as another node.')
-            if current_depth > self._max_depth:
-                self._max_depth = current_depth
-            if dir == 'right' and self._rbal < current_depth:
-                self._rbal = current_depth
-            if dir == 'left' and self._lbal < current_depth:
-                self._lbal = current_depth
+                if val < current_node._data:
+                    if current_node._lkid:
+                        current_node = current_node._lkid
+                    else:
+                        current_node._lkid = new_node
+                        new_node._parent = current_node
+                        self._get_new_max()
+                elif val > current_node._data:
+                    if current_node._rkid:
+                        current_node = current_node._rkid
+                    else:
+                        current_node._rkid = new_node
+                        new_node._parent = current_node
+                        self._get_new_max()
         self._size += 1
 
     def _balance_helper_breadth_first(self, node):
@@ -243,22 +222,29 @@ class BinarySearchTree(object):
             return right
         return left
 
-    def _get_new_max(self):
+    def _get_new_max(self, insert=True):
         """Get the new max depth."""
-        right = 0
-        left = 0
+        right = 1
+        left = 1
         if self._root:
             if self._root._rkid:
-                right = self._new_depth(self._root._rkid, 1)
+                right = self._new_depth(self._root._rkid, 2)
             if self._root._lkid:
-                left = self._new_depth(self._root._lkid, 1)
+                left = self._new_depth(self._root._lkid, 2)
             self._rbal = right
             self._lbal = left
-            if right > left:
-                if right < self._max_depth:
-                    self._max_depth = right
-            elif left < self._max_depth:
-                self._max_depth = left
+            if insert:
+                if right > left:
+                    if right > self._max_depth:
+                        self._max_depth = right
+                elif left > self._max_depth:
+                    self._max_depth = left
+            else:
+                if right > left:
+                    if right < self._max_depth:
+                        self._max_depth = right
+                elif left < self._max_depth:
+                    self._max_depth = left
 
     def delete(self, val):
         """Check the status of a node."""
@@ -271,7 +257,7 @@ class BinarySearchTree(object):
             self._del_node_one_child(node._parent, node)
         else:
             self._del_node_no_children(node._parent, node)
-        self._get_new_max()
+        self._get_new_max(False)
         self._size = len(self._balance_helper_breadth_first(self._root))
         self._self_balance()
 
@@ -382,7 +368,7 @@ class BinarySearchTree(object):
                             self._self_balance_right_rotation(self.search(node_data))
                     else:
                         self._self_balance_left_right_rotation(self.search(node_data))
-        self._get_new_max()
+        self._get_new_max(False)
 
     def _self_balance_right_rotation(self, node):
         """Balance sub-tree via right rotation."""
