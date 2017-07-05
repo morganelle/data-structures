@@ -61,9 +61,12 @@ class BinarySearchTree(object):
         if type(entry) is not tuple:
             raise TypeError('Please enter a tuple containing the key and value.')
         if self.contains(val):
+            for kv in self.search(val)._entries:
+                if entry[0] is kv[0]:
+                    raise KeyError('Key already in hash table.')
             self.search(val)._entries.append(entry)
             return
-        new_node = Node(val)
+        new_node = Node(val, entry)
         if self._size == 0:
             self._root = new_node
             self._max_depth = 1
@@ -97,7 +100,7 @@ class BinarySearchTree(object):
             raise TypeError('This tree accepts numbers only.')
         if self.contains(val):
             raise ValueError('Node already in tree.')
-        new_node = Node(val)
+        new_node = Node(val, None)
         if self._size == 0:
             self._root = new_node
             self._max_depth = 1

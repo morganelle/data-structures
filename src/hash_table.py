@@ -1,5 +1,5 @@
 """Python implementation of a hash table."""
-from hash_bst import BinarySearchTree
+from hash_bst import BinarySearchTree  # pragma no cover
 
 
 class HashTable(object):
@@ -26,41 +26,46 @@ class HashTable(object):
         base = 0
         for char in key:
             base += self._get_letter_value(char)
+            base -= 1
         return base
 
     def _build_bins(self, size):
         """Build bins from binary search trees."""
         bins = []
-        bst = BinarySearchTree()
+        #bst = BinarySearchTree()
         for container in range(size):
-            bins.append(bst)
+            bins.append(BinarySearchTree())
         return bins
 
-    def init(self, size, hash_function=_prime_hash):
+    def __init__(self, size, hash_function=False):
         """Instantiate a new hash table."""
+        if type(size) is not int:
+            raise TypeError('Please enter an integer for size.')
+        if size < 1:
+            raise ValueError('Please enter a positive integer as size.')
         self._bins = self._build_bins(size)
-        self._hash_function = hash_function
+        if hash_function:
+            self._hash_function = hash_function
+        else:
+            self._hash_function = self._prime_hash
         self._size = size
-
-    def get_bin(self, hash_number):
-        """Find bin based on hash number."""
-        return hash_number % self._size
 
     def get(self, key):
         """Return a value for a given key."""
         hash_number = self._hash(key)
-        binary_tree = self.bins[self._get_bin(hash_number)]
+        binary_tree = self._bins[hash_number % self._size]
         node = binary_tree.search(hash_number)
-        entries = node._entries
-        for entry in entries:
-            if key is entries[0]:
-                return entries[1]
+        if node:
+            entries = node._entries
+            for entry in entries:
+                if key is entry[0]:
+                    return entry[1]
         raise KeyError('Key not in hash table.')
 
     def set(self, key, value):
         """Set a new value for a given key."""
         hash_number = self._hash(key)
-        binary_tree = self.bins[self._get_bin(hash_number)]
+        binary_tree = self._bins[hash_number % self._size]
         binary_tree.insert(hash_number, (key, value))
 
     def _hash(self, key):

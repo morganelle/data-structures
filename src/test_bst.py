@@ -1,5 +1,4 @@
 """Tests for binary search tree."""
-# from bst import Node
 from bst import BinarySearchTree
 import pytest
 
