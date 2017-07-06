@@ -439,7 +439,7 @@ class BinarySearchTree(object):
         node._parent = left_kid
         if node == self._root:
             self._root = left_kid
-        elif left_kid == left_kid._parent._rkid:
+        elif node == left_kid._parent._rkid:
             left_kid._parent._rkid = left_kid
         else:
             left_kid._parent._lkid = left_kid
@@ -455,7 +455,7 @@ class BinarySearchTree(object):
         node._parent = right_kid
         if node == self._root:
             self._root = right_kid
-        elif right_kid == right_kid._parent._lkid:
+        elif node == right_kid._parent._lkid:
             right_kid._parent._lkid = right_kid
         else:
             right_kid._parent._rkid = right_kid

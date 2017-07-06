@@ -529,3 +529,9 @@ def test_non_root_left_right_rotation():
     """Test left-right rotation on non-root node."""
     tree = BinarySearchTree([6, 4, 10, 7, 9])
     assert tree._root._data == 6
+
+
+def test_non_root_two_child_right_rotation():
+    """Test two child right rotation on non-root node."""
+    tree = BinarySearchTree([10, 5, 20, 4, 6, 18, 21, 17, 19, 16])
+    assert tree._root._data == 10
