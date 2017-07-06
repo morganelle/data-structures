@@ -343,8 +343,8 @@ class BinarySearchTree(object):
             for node in mini_tree_nodes:
                 mini_tree._insert_helper(node)
             curr_balance = mini_tree.balance()
-            if curr_balance < -1 or curr_balance > 1:  # if rotation needed
-                if curr_balance > 1:  # left or r/l rotation needed
+            if curr_balance < -1 or curr_balance > 1:
+                if curr_balance > 1:
                     sub_mini_tree = BinarySearchTree()
                     sub_mini_tree_nodes = self._balance_helper_breadth_first(self.search(mini_tree._root._rkid._data))
                     for node in sub_mini_tree_nodes:
@@ -356,7 +356,7 @@ class BinarySearchTree(object):
                             self._self_balance_left_rotation(self.search(node_data))
                     else:
                         self._self_balance_right_left_rotation(self.search(node_data))
-                elif curr_balance < -1:  # right or l/r rotation needed
+                elif curr_balance < -1:
                     sub_mini_tree = BinarySearchTree()
                     sub_mini_tree_nodes = self._balance_helper_breadth_first(self.search(mini_tree._root._lkid._data))
                     for node in sub_mini_tree_nodes:
@@ -390,7 +390,10 @@ class BinarySearchTree(object):
             if node == self._root:
                 self._root = left_kid
             else:
-                node._parent._lkid = left_kid
+                if node._parent._lkid == node:
+                    node._parent._lkid = left_kid
+                else:
+                    node._parent._rkid = left_kid
             left_kid._parent = node._parent
             left_kid._rkid = node
             node._parent = left_kid
@@ -416,7 +419,10 @@ class BinarySearchTree(object):
             if node == self._root:
                 self._root = right_kid
             else:
-                node._parent._rkid = right_kid
+                if node._parent._lkid == node:
+                    node._parent._lkid = right_kid
+                else:
+                    node._parent._rkid = right_kid
             right_kid._parent = node._parent
             right_kid._lkid = node
             node._parent = right_kid

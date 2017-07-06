@@ -518,3 +518,9 @@ def test_self_balance_left_2_kid(left_rotation):
     assert left_rotation._lbal == 3
     assert left_rotation._rbal == 3
     assert left_rotation._max_depth == 3
+
+
+def test_bug():
+    """."""
+    tree = BinarySearchTree([1, 2, 5, 4, 3])
+    assert tree._root._data == 2
