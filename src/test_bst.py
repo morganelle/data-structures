@@ -1,5 +1,4 @@
 """Tests for binary search tree."""
-# from bst import Node
 from bst import BinarySearchTree
 import pytest
 
@@ -520,7 +519,13 @@ def test_self_balance_left_2_kid(left_rotation):
     assert left_rotation._max_depth == 3
 
 
-def test_bug():
-    """."""
+def test_non_root_right_rotation():
+    """Test right rotation on non-root node."""
     tree = BinarySearchTree([1, 2, 5, 4, 3])
     assert tree._root._data == 2
+
+
+def test_non_root_left_right_rotation():
+    """Test left-right rotation on non-root node."""
+    tree = BinarySearchTree([6, 4, 10, 7, 9])
+    assert tree._root._data == 6
