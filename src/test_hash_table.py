@@ -24,18 +24,17 @@ def init_hash_with_custom_function():
     return HashTable(10, naive_hash)
 
 
-# @pytest.fixture
-# def init_hash_words():
-#     """."""
-#     word_hash = HashTable(36)
-#     word_file = open('/usr/share/dict/words')
-#     word_file = word_file.read()
-#     word_file = str(word_file).strip()
-#     word_text = word_file.split('\n')
-#     for i in range(len(word_text)):
-#         word_hash.set(word_text[i], i)
-#     word_file.close()
-#     return word_hash
+@pytest.fixture
+def init_hash_words():
+    """."""
+    word_hash = HashTable(36)
+    word_file = open('/usr/share/dict/words', 'r')
+    word_text = word_file.read()
+    word_file.close()
+    word_text = word_text.split('\n')
+    for i in range(len(word_text)):
+        word_hash.set(word_text[i], i)
+    return word_hash
 
 
 def test_get_letter_value():
@@ -233,12 +232,10 @@ def test_get_nonexistent_key(init_hash_ten):
         init_hash_ten.get('hi')
 
 
-# def test_word_dict(init_hash_words):
-#     """."""
-#     distr = []
-#     # print('here')
-#     for container in init_hash_words._bins:
-#         distr.append(container.size())
-#     # print('done')
-#     assert len(distr) == 36
-#     assert distr == []
+def test_word_dict(init_hash_words):
+    """."""
+    distr = []
+    for container in init_hash_words._bins:
+        distr.append(container.size())
+    assert len(distr) == 36
+    assert distr == []

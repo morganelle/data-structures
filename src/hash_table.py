@@ -17,7 +17,7 @@ class HashTable(object):
         base = 1
         offset = 3
         for char in key:
-            base = base * offset + self._get_letter_value(char)
+            base = base + offset + self._get_letter_value(char)
         base -= 4
         return base
 
@@ -32,7 +32,6 @@ class HashTable(object):
     def _build_bins(self, size):
         """Build bins from binary search trees."""
         bins = []
-        #bst = BinarySearchTree()
         for container in range(size):
             bins.append(BinarySearchTree())
         return bins

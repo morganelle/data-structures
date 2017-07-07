@@ -27,13 +27,15 @@ test_list = ['Aaron', 'Ababdeh', 'abacination', 'abaisance', 'abampere']
 
 def make_dict():
     word_hash = HashTable(36)
-    # word_file = open('/usr/share/dict/words')
-    # word_file = word_file.read()
-    # word_file = str(word_file).strip()
-    # word_text = word_file.split('\n')
-    for i in range(len(test_list)):
-        if _prime_hash(test_list[i]) % 36 == 34:
-            print(test_list[i], _prime_hash(test_list[i]))
-        word_hash.set(test_list[i], i)
-    # word_file.close()
+    word_file = open('/usr/share/dict/words')
+    word_text = word_file.read()
+    word_text = str(word_text).strip()
+    word_text = word_text.split('\n')
+    # iteration = len(word_text)
+    print(word_text[-1])
+    # for i in range(iteration - 5, iteration):
+    #     # if _prime_hash(word_text[i]) % 36 == 34:
+    #     # print(word_text[i], _prime_hash(word_text[i]))
+    #     # word_hash.set(word_text[i], i)
+    word_file.close()
     return word_hash
