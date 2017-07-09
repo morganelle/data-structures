@@ -234,11 +234,11 @@ def test_get_nonexistent_key(init_hash_ten):
         init_hash_ten.get('hi')
 
 
-def test_word_dict(init_hash_words):
-    """Test hashing function on large data set of words."""
-    distr = []
-    for container in init_hash_words._bins:
-        distr.append(container.size())
-    assert len(distr) == 36
-    for bst_bin in init_hash_words._bins:
-        assert bst_bin.size() > 0
+# def test_word_dict(init_hash_words):
+#     """Test hashing function on large data set of words."""
+#     distr = []
+#     for container in init_hash_words._bins:
+#         distr.append(container.size())
+#     assert len(distr) == 36
+#     for bst_bin in init_hash_words._bins:
+#         assert bst_bin.size() > 0

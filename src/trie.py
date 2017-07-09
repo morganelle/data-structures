@@ -4,11 +4,15 @@
 class Node(object):
     """Node attributes for Trie."""
 
-    def __init___(self, parent=None, data=None):
+    def __init__(self, parent=None, data=None):
         """Instantiate a new Node."""
         self._parent = parent
         self._children = []
         self._data = data
+
+    def __repr__(self):
+        """."""
+        return 'Node: {}'.format(self._data)
 
 
 class Trie(object):
@@ -30,7 +34,7 @@ class Trie(object):
             else:
                 return False
         for child in current_node._children:
-            if child == '$':
+            if child._data == '$':
                 return True
         return False
 
@@ -45,6 +49,8 @@ class Trie(object):
         """Insert a new word into the Trie."""
         if type(val) is not str:
             raise TypeError('Please enter a string.')
+        if ' ' in val:
+            raise ValueError('Please enter a single word without any spaces.')
         if self.contains(val):
             raise ValueError('String is already in Trie.')
         current_node = self._root
@@ -59,7 +65,7 @@ class Trie(object):
         current_node._children.append(new_node)
         self._size += 1
 
-    def remove(self, val);
+    def remove(self, val):
         """Remove a word from the Trie."""
         if type(val) is not str:
             raise TypeError('Please enter a string.')
@@ -69,11 +75,13 @@ class Trie(object):
         for char in val:
             if self._child_helper(current_node, char):
                 current_node = self._child_helper(current_node, char)
-        node = _parent_helper(current_node, '$')
+        node = self._parent_helper(current_node, '$')
         current_node._children.remove(node)
-        while current_node is not self._root or len(current_node._children) > 0:
-                current_node._parent._children.remove(current_node)
-                current_node = current_node._parent
+        while current_node is not self._root:
+            if len(current_node._children) > 0:
+                break
+            current_node._parent._children.remove(current_node)
+            current_node = current_node._parent
         self._size -= 1
 
     def _parent_helper(self, parent, char):
