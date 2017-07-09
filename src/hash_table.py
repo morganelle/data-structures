@@ -6,7 +6,7 @@ class HashTable(object):
     """Methods and attributes of a hash table."""
 
     def _get_letter_value(self, char):
-        """."""
+        """Return int value for a character in a string."""
         try:
             return int(char) + 1
         except ValueError:
@@ -17,7 +17,7 @@ class HashTable(object):
         base = 1
         offset = 3
         for char in key:
-            base = base + offset + self._get_letter_value(char)
+            base = base * offset + self._get_letter_value(char)
         base -= 4
         return base
 
@@ -47,24 +47,23 @@ class HashTable(object):
             self._hash_function = hash_function
         else:
             self._hash_function = self._prime_hash
-        self._size = size
 
     def get(self, key):
         """Return a value for a given key."""
         hash_number = self._hash(key)
-        binary_tree = self._bins[hash_number % self._size]
+        binary_tree = self._bins[hash_number % len(self._bins)]
         node = binary_tree.search(hash_number)
         if node:
             entries = node._entries
             for entry in entries:
-                if key is entry[0]:
+                if key == entry[0]:
                     return entry[1]
         raise KeyError('Key not in hash table.')
 
     def set(self, key, value):
         """Set a new value for a given key."""
         hash_number = self._hash(key)
-        binary_tree = self._bins[hash_number % self._size]
+        binary_tree = self._bins[hash_number % len(self._bins)]
         binary_tree.insert(hash_number, (key, value))
 
     def _hash(self, key):

@@ -1,7 +1,7 @@
 """Python implementation of a binary search tree."""
 
 
-class Node(object):
+class Node(object):  # pragma no cover
     """Node object methods."""
 
     def __init__(self, data, entry):
@@ -13,7 +13,7 @@ class Node(object):
         self._lkid = None
 
 
-class BinarySearchTree(object):
+class BinarySearchTree(object):  # pragma no cover
     """Binary search tree object methods and attributes."""
 
     def __init__(self):

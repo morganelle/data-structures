@@ -6,7 +6,7 @@ All modules and tests located in src directory.
 ## Binary Search Tree
 Self-balancing binary search tree using AVL balancing.
 - module: bst.py
-- test: test_bst.py
+- tests: test_bst.py
 - methods:
     - size: Return number of nodes in binary search tree.
     - balance: Return difference between left and right balance.
@@ -18,3 +18,12 @@ Self-balancing binary search tree using AVL balancing.
     - pre_order: sort bst by pre-order.
     - in_order: sort bst in order.
     - post_order: post order sort of bst.
+
+## Hash Table
+Hash table using binary search tree bins. Two hashes are provided: an additive hash and a hash adapted from the Bernstein hash.
+- module: hash_table.py
+- tests: test_hash_table.py
+- methods:
+    - get: Returns the value for a given key; time complexity is the worst case is O(log n) but on average will be constant O(1).
+    - set: Stores a key-value pair in the hash table. Time complexity is the worst case is O(log n) but on average will be constant O(1)
+    - _hash: Creates a numeric value by which the key-value pair will be inserted into table. Time complexity will be O(n).
