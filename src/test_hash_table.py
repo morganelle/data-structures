@@ -41,7 +41,7 @@ def init_hash_words():
     word_file.close()
     word_text = word_text.split('\n')
     for i in range(len(word_text)):
-        word_hash.set(word_text[i], i)
+        word_hash.set(str(word_text[i]), i)
     return word_hash
 
 
