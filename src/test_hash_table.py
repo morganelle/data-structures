@@ -240,5 +240,5 @@ def test_word_dict(init_hash_words):
     for container in init_hash_words._bins:
         distr.append(container.size())
     assert len(distr) == 36
-    assert init_hash_words.get('a') == 1
-    assert init_hash_words.get('hi') == 85595
+    for bst_bin in init_hash_words._bins:
+        assert bst_bin.size() > 0
