@@ -240,6 +240,5 @@ def test_word_dict(init_hash_words):
     for container in init_hash_words._bins:
         distr.append(container.size())
     assert len(distr) == 36
-    assert init_hash_words.get('abacination') == 24
-    assert init_hash_words.get('woodcrafty') == 233195
-    assert init_hash_words.get('zoopsia') == 235631
+    assert init_hash_words.get('a') == 1
+    assert init_hash_words.get('hi') == 85595
