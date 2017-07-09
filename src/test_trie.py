@@ -30,13 +30,11 @@ def init_trie_three_words_shared_letters():
 @pytest.fixture
 def init_jumbo_list():
     """Fixture for 250k word test."""
-    # jumbo_trie = Trie()
     word_file = open('/usr/share/dict/words', 'r')
     word_text = word_file.read()
     word_file.close()
     word_text = word_text.split('\n')
-    # for word in word_text:
-    #     jumbo_trie.insert(word)
+    word_text = word_text[:-1]
     return word_text
 
 
@@ -188,9 +186,63 @@ def test_size_trie_before_and_after_insert(init_trie_three_words_shared_letters)
 
 
 def test_insert_jumbo_list(init_jumbo_list):
-    """."""
+    """Test insert on jumbo word list."""
     jumbo_trie = Trie()
     for word in init_jumbo_list:
         jumbo_trie.insert(word)
     assert len(init_jumbo_list) == jumbo_trie.size()
     assert jumbo_trie.contains('apple')
+
+
+def test_traversal_start_not_string(init_trie_three_words_shared_letters):
+    """Test traversal error when start arg is not a string. NOTE: currently returning a generator object."""
+    gen = init_trie_three_words_shared_letters.traversal(3)
+    with pytest.raises(TypeError):
+        next(gen)
+
+
+def test_traversal_start_empty_string(init_trie_three_words_shared_letters):
+    """Test traversal error when start arg is not a string. NOTE: currently returning a generator object."""
+    gen = init_trie_three_words_shared_letters.traversal('')
+    with pytest.raises(ValueError):
+        next(gen)
+
+
+def test_traversal_start_string_with_space(init_trie_three_words_shared_letters):
+    """Test traversal error when start arg is not a string. NOTE: currently returning a generator object."""
+    gen = init_trie_three_words_shared_letters.traversal(' ')
+    with pytest.raises(ValueError):
+        next(gen)
+
+
+def test_traversal_all_words(init_trie_three_words_shared_letters):
+    """Test all words with a shared start are generated."""
+    gen = init_trie_three_words_shared_letters.traversal('be')
+    assert next(gen) == 'be'
+    assert next(gen) == 'bee'
+    assert next(gen) == 'bell'
+
+
+def test_traversal_all_words_with_insert_not_in_gen(init_trie_three_words_shared_letters):
+    """Test all words with a shared start are generated."""
+    init_trie_three_words_shared_letters.insert('bacon')
+    gen = init_trie_three_words_shared_letters.traversal('be')
+    assert next(gen) == 'be'
+    assert next(gen) == 'bee'
+    assert next(gen) == 'bell'
+
+
+def test_traversal_all_words_with_insert_in_gen(init_trie_three_words_shared_letters):
+    """Test all words with a shared start are generated."""
+    init_trie_three_words_shared_letters.insert('bacon')
+    gen = init_trie_three_words_shared_letters.traversal('b')
+    assert next(gen) == 'be'
+    assert next(gen) == 'bee'
+    assert next(gen) == 'bell'
+
+
+def test_non_matching_start_raises_stop_iteration(init_trie_three_words_shared_letters):
+    """Test non-matching start for traversal."""
+    gen = init_trie_three_words_shared_letters.traversal('hi')
+    with pytest.raises(ValueError):
+        next(gen)

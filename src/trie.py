@@ -43,10 +43,7 @@ class Trie(object):
 
     def insert(self, val):
         """Insert a new word into the Trie."""
-        if type(val) is not str:
-            raise TypeError('Please enter a string.')
-        if ' ' in val:
-            raise ValueError('Please enter a single word without any spaces.')
+        self._input_validation(val)
         if self.contains(val):
             raise ValueError('String is already in Trie.')
         current_node = self._root
@@ -63,8 +60,7 @@ class Trie(object):
 
     def remove(self, val):
         """Remove a word from the Trie."""
-        if type(val) is not str:
-            raise TypeError('Please enter a string.')
+        self._input_validation(val)
         if not self.contains(val):
             raise ValueError('String isn\'t in Trie.')
         current_node = self._root
@@ -89,3 +85,33 @@ class Trie(object):
     def size(self):
         """Return number of words in Trie."""
         return self._size
+
+    def traversal(self, start):
+        """Return a generator object that yields words in a depth-first fashion."""
+        self._input_validation(start)
+        current_node = self._root
+        for char in start:
+            if self._child_helper(current_node, char):
+                current_node = self._child_helper(current_node, char)
+            else:
+                raise ValueError('String not in Trie.')
+        for word in self._traversal_helper(current_node, start):
+            yield word
+
+    def _traversal_helper(self, current_node, start):
+        """Continue to build words from start and yield them back to traversal method."""
+        for child in current_node._children:
+            if child._data == '$':
+                yield start
+            else:
+                for word in self._traversal_helper(child, start + child._data):
+                    yield word
+
+    def _input_validation(self, val):
+        """Ensure user input is a string with no spaces."""
+        if type(val) is not str:
+            raise TypeError('Please enter a string.')
+        if ' ' in val:
+            raise ValueError('Please enter a string with no spaces.')
+        if val is '':
+            raise ValueError('Please enter a string with letters.')

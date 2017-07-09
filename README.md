@@ -28,7 +28,6 @@ Hash table using binary search tree bins. Two hashes are provided: an additive h
     - set: Stores a key-value pair in the hash table. Time complexity is the worst case is O(log n) but on average will be constant O(1)
     - _hash: Creates a numeric value by which the key-value pair will be inserted into table. Time complexity will be O(n).
 
-
 ## Trie
 Trie that stores single words.
 - module: trie.py
@@ -37,4 +36,5 @@ Trie that stores single words.
     - insert: inserts a new word into the trie. Time complexity is O(n), n being the length of the word.
     - remove: removes a word from the trie. Time complexity is O(n), n being the length of the word.
     - size: returns the number of whole words in the trie. Time complexity is constant O(1).
-    - contains: returns a boolean as to whether a word has been inserted in the trie. Time complexity is O(n)
+    - contains: returns a boolean as to whether a word has been inserted in the trie. Time complexity is O(n).
+    - traversal: takes a string and returns a generator of words in the trie that begin with the string. Time complexity is O(n), n being the length of the user input plus the length of all remaining characters. Worst case, n would be the size of the entire tree.
