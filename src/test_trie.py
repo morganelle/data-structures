@@ -27,6 +27,19 @@ def init_trie_three_words_shared_letters():
     return new_trie
 
 
+@pytest.fixture
+def init_jumbo_list():
+    """Fixture for 250k word test."""
+    # jumbo_trie = Trie()
+    word_file = open('/usr/share/dict/words', 'r')
+    word_text = word_file.read()
+    word_file.close()
+    word_text = word_text.split('\n')
+    # for word in word_text:
+    #     jumbo_trie.insert(word)
+    return word_text
+
+
 def test_init_empty_node():
     """Test that node init attributes empty by default."""
     new_node = Node()
@@ -172,3 +185,12 @@ def test_size_trie_before_and_after_insert(init_trie_three_words_shared_letters)
     assert init_trie_three_words_shared_letters.size() == 3
     init_trie_three_words_shared_letters.insert('happy')
     assert init_trie_three_words_shared_letters.size() == 4
+
+
+def test_insert_jumbo_list(init_jumbo_list):
+    """."""
+    jumbo_trie = Trie()
+    for word in init_jumbo_list:
+        jumbo_trie.insert(word)
+    assert len(init_jumbo_list) == jumbo_trie.size()
+    assert jumbo_trie.contains('apple')

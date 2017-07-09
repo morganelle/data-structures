@@ -10,10 +10,6 @@ class Node(object):
         self._children = []
         self._data = data
 
-    def __repr__(self):
-        """."""
-        return 'Node: {}'.format(self._data)
-
 
 class Trie(object):
     """Attributes and methods of a Trie."""
