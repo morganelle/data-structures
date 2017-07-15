@@ -51,6 +51,11 @@ def test_short_list_with_similar_starting_number():
     assert sort([1123412, 104, 11, 150, 1203, 1]) == [1, 11, 104, 150, 1203, 1123412]
 
 
+def test_short_list_with_tuple_input():
+    """Test a shorter list with similar starting numbers."""
+    assert sort((1123412, 104, 11, 150, 1203, 1)) == [1, 11, 104, 150, 1203, 1123412]
+
+
 def test_longer_list_random_values():
     """Test longer list against result of sorted method."""
     input_list = [randint(0, 1000) for x in range(100)]
