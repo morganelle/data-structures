@@ -67,3 +67,10 @@ Trie that stores single words.
 - methods:
     - quick_sort: returns a sorted list of numeric values
 - perfomance tests: run ```python quick_sort.py`` in the terminal from the src directory to see performance tests; uses timeit Timer to measure speed.
+
+### Radix sort
+- module: radix_sort.py
+- tests: test_radix_sort.py
+- methods:
+    - quick_sort: returns a sorted list of numeric values
+- perfomance tests: run ```python radix_sort.py`` in the terminal from the src directory to see performance tests; uses timeit Timer to measure speed.
