@@ -5,6 +5,7 @@ def quick_sort(unsorted_list):
     """Sort values with quick sort algorithm."""
     if type(unsorted_list) not in [list, tuple] or len(unsorted_list) < 1:
         raise TypeError('Please enter a list or a tuple with at least one value.')
+    unsorted_list = list(unsorted_list)
     pivot = unsorted_list[0]
     _verify_input(pivot)
     sorted_list = []
@@ -51,7 +52,7 @@ if __name__ == '__main__':  # pragma no cover
         'from __main__ import quick_sort'
     )
     random_short = Timer(
-        'quick_sort([randint(0, 1000) for x in range(10)])',
+        'quick_sort([randint(0, 10) for x in range(10)])',
         'from __main__ import quick_sort; from random import randint'
     )
     random_long = Timer(
