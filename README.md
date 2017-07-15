@@ -54,7 +54,7 @@ Trie that stores single words.
     - insertion_sort: returns a sorted list of numeric values
 - perfomance tests: run ```python insertion_sort.py`` in the terminal from the src directory to see performance tests; uses timeit Timer to measure speed.
 
-### Bubble sort
+### Merge sort
 - module: merge_sort.py
 - tests: test_merge_sort.py
 - methods:
