@@ -1,5 +1,8 @@
+"""Python implementation of a merge sort algorithm."""
+
+
 def merge_sort(new_list):
-    """sorts a list through merge sort methods"""
+    """Sort a list through merge sort methods."""
     if type(new_list) not in [list, tuple]:
         raise TypeError('must pass in a list or a tuple')
     new_list = list(new_list)
@@ -8,7 +11,7 @@ def merge_sort(new_list):
 
 
 def list_split(new_list):
-    """splits the list until it has 1 element"""
+    """Split the list until it has 1 element."""
     if len(new_list) < 2:
         if type(new_list[0]) not in [int, float]:
             raise TypeError('the list must only have numbers')
@@ -16,12 +19,12 @@ def list_split(new_list):
     halfpt = len(new_list) // 2
     list1 = list_split(new_list[:halfpt])
     list2 = list_split(new_list[halfpt:])
-    sorted_list = sort_list(list1, list2)
+    sorted_list = sort_lists(list1, list2)
     return sorted_list
 
 
-def sort_list(list1, list2):
-    """sorts the list"""
+def sort_lists(list1, list2):
+    """Sort the list."""
     index1 = 0
     index2 = 0
     if len(list1) == 0:
@@ -76,24 +79,24 @@ if __name__ == '__main__':  # pragma no cover
         'merge_sort([randint(0, 2) for x in range(1000)])',
         'from __main__ import merge_sort; from random import randint'
     )
-print('''
-Here are some results for several test cases for the merge sort,
-run 100 times each:
+    print('''
+    Here are some results for several test cases for the merge sort,
+    run 100 times each:
 
-Best case for 10 numbers: {} seconds
-Best case for 1000 numbers: {} seconds
+    Best case for 10 numbers: {} seconds
+    Best case for 1000 numbers: {} seconds
 
-Worst case for 10 numbers: {} seconds
-Worst base for 1000 numbers: {} seconds
+    Worst case for 10 numbers: {} seconds
+    Worst base for 1000 numbers: {} seconds
 
-Random case for 10 numbers: {} seconds
-Random case for 1000 numbers: {} seconds
-Random case for 1000 numbers with lots of duplicates
-(secretly, the real worst case): {} seconds
-'''.format(best_case_short.timeit(100),
-           best_case_long.timeit(100),
-           worst_case_short.timeit(100),
-           worst_case_long.timeit(100),
-           random_short.timeit(100),
-           random_long.timeit(100),
-           random_long_dupes.timeit(100)))
+    Random case for 10 numbers: {} seconds
+    Random case for 1000 numbers: {} seconds
+    Random case for 1000 numbers with lots of duplicates
+    (secretly, the real worst case): {} seconds
+    '''.format(best_case_short.timeit(100),
+               best_case_long.timeit(100),
+               worst_case_short.timeit(100),
+               worst_case_long.timeit(100),
+               random_short.timeit(100),
+               random_long.timeit(100),
+               random_long_dupes.timeit(100)))
