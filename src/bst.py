@@ -95,40 +95,6 @@ class BinarySearchTree(object):
                         new_node._parent = current_node
                         self._get_new_max()
         self._size += 1
-        self._self_balance()
-
-    def _insert_helper(self, val):
-        """Insert a new value into binary search tree."""
-        if type(val) not in [int, float]:
-            raise TypeError('This tree accepts numbers only.')
-        if self.contains(val):
-            raise ValueError('Node already in tree.')
-        new_node = Node(val)
-        if self._size == 0:
-            self._root = new_node
-            self._max_depth = 1
-            self._rbal = 1
-            self._lbal = 1
-        else:
-            current_depth = 1
-            current_node = self._root
-            while val is not current_node._data:
-                current_depth += 1
-                if val < current_node._data:
-                    if current_node._lkid:
-                        current_node = current_node._lkid
-                    else:
-                        current_node._lkid = new_node
-                        new_node._parent = current_node
-                        self._get_new_max()
-                elif val > current_node._data:
-                    if current_node._rkid:
-                        current_node = current_node._rkid
-                    else:
-                        current_node._rkid = new_node
-                        new_node._parent = current_node
-                        self._get_new_max()
-        self._size += 1
 
     def _balance_helper_breadth_first(self, node):
         """Yield a subtree for a given node."""
@@ -206,9 +172,8 @@ class BinarySearchTree(object):
 
     def post_order(self):
         """Post order sort of bst."""
-        if self._root:
-            for node_data in self._post_order_helper(self._root):
-                yield node_data
+        for node_data in self._post_order_helper(self._root):
+            yield node_data
 
     def _new_depth(self, node, curr_depth):
         """Set the new right and left balance."""
@@ -259,7 +224,6 @@ class BinarySearchTree(object):
             self._del_node_no_children(node._parent, node)
         self._get_new_max(False)
         self._size = len(self._balance_helper_breadth_first(self._root))
-        self._self_balance()
 
     def _del_node_no_children(self, parent, node):
         """Delete a node that has zero kids."""
@@ -326,172 +290,6 @@ class BinarySearchTree(object):
                 break
             current_node = current_node._lkid
         return current_node
-
-    def _self_balance(self):
-        """Re-balance tree after insertion or deletion."""
-        post_list = []
-        post_order_output = self.post_order()
-        while True:
-            try:
-                data = next(post_order_output)
-                post_list.append(data)
-            except StopIteration:
-                break
-        for node_data in post_list:
-            mini_tree = BinarySearchTree()
-            mini_tree_nodes = self._balance_helper_breadth_first(self.search(node_data))
-            for node in mini_tree_nodes:
-                mini_tree._insert_helper(node)
-            curr_balance = mini_tree.balance()
-            if curr_balance < -1 or curr_balance > 1:
-                if curr_balance > 1:
-                    sub_mini_tree = BinarySearchTree()
-                    sub_mini_tree_nodes = self._balance_helper_breadth_first(self.search(mini_tree._root._rkid._data))
-                    for node in sub_mini_tree_nodes:
-                        sub_mini_tree._insert_helper(node)
-                    if sub_mini_tree.balance() > 0:
-                        if sub_mini_tree._root._rkid and sub_mini_tree._root._lkid:
-                            self._self_balance_left_two_kid_rotation(self.search(node_data))
-                        else:
-                            self._self_balance_left_rotation(self.search(node_data))
-                    else:
-                        print(curr_balance, 'calling right-left rotation')
-                        self._self_balance_right_left_rotation(self.search(node_data))
-                elif curr_balance < -1:
-                    sub_mini_tree = BinarySearchTree()
-                    sub_mini_tree_nodes = self._balance_helper_breadth_first(self.search(mini_tree._root._lkid._data))
-                    for node in sub_mini_tree_nodes:
-                        sub_mini_tree._insert_helper(node)
-                    if sub_mini_tree.balance() < 0:
-                        if sub_mini_tree._root._rkid and sub_mini_tree._root._lkid:
-                            self._self_balance_right_two_kid_rotation(self.search(node_data))
-                        else:
-                            self._self_balance_right_rotation(self.search(node_data))
-                    else:
-                        self._self_balance_left_right_rotation(self.search(node_data))
-        self._get_new_max(False)
-
-    def _self_balance_right_rotation(self, node):
-        """Balance sub-tree via right rotation."""
-        left_kid = node._lkid
-        if node._lkid._rkid:
-            grand_kid = node._lkid._rkid
-            if node == self._root:
-                self._root = grand_kid
-            else:
-                node._parent._lkid = grand_kid
-            grand_kid._parent = node._parent
-            grand_kid._lkid = left_kid
-            grand_kid._rkid = node
-            node._parent = grand_kid
-            left_kid._parent = grand_kid
-            left_kid._rkid = None
-            node._lkid = None
-        else:
-            if node == self._root:
-                self._root = left_kid
-            else:
-                if node._parent._lkid == node:
-                    node._parent._lkid = left_kid
-                else:
-                    node._parent._rkid = left_kid
-            left_kid._parent = node._parent
-            left_kid._rkid = node
-            node._parent = left_kid
-            node._lkid = None
-
-    def _self_balance_left_rotation(self, node):
-        """Balance sub-tree via left rotation."""
-        right_kid = node._rkid
-        if node._rkid._lkid:
-            grand_kid = node._rkid._lkid
-            if node == self._root:
-                self._root = grand_kid
-            else:
-                node._parent._rkid = grand_kid
-            grand_kid._parent = node._parent
-            grand_kid._lkid = node
-            grand_kid._rkid = right_kid
-            node._parent = grand_kid
-            right_kid._parent = grand_kid
-            right_kid._lkid = None
-            node._rkid = None
-        else:
-            if node == self._root:
-                self._root = right_kid
-            else:
-                if node._parent._lkid == node:
-                    node._parent._lkid = right_kid
-                else:
-                    node._parent._rkid = right_kid
-            right_kid._parent = node._parent
-            right_kid._lkid = node
-            node._parent = right_kid
-            node._rkid = None
-
-    def _self_balance_right_two_kid_rotation(self, node):
-        """Balance sub-tree with two kids via rotation."""
-        left_kid = node._lkid
-        grand_kid = left_kid._rkid
-        left_kid._parent = node._parent
-        left_kid._rkid = node
-        grand_kid._parent = node
-        node._lkid = grand_kid
-        node._parent = left_kid
-        if node == self._root:
-            self._root = left_kid
-        elif node == left_kid._parent._rkid:
-            left_kid._parent._rkid = left_kid
-        else:
-            left_kid._parent._lkid = left_kid
-
-    def _self_balance_left_two_kid_rotation(self, node):
-        """Balance sub-tree with two kids via right rotation."""
-        right_kid = node._rkid
-        grand_kid = right_kid._lkid
-        right_kid._parent = node._parent
-        right_kid._lkid = node
-        grand_kid._parent = node
-        node._rkid = grand_kid
-        node._parent = right_kid
-        if node == self._root:
-            self._root = right_kid
-        elif node == right_kid._parent._lkid:
-            right_kid._parent._lkid = right_kid
-        else:
-            right_kid._parent._rkid = right_kid
-
-    def _self_balance_left_right_rotation(self, node):
-        """Balance sub-tree via left-right rotation."""
-        left_kid = node._lkid
-        grand_kid = left_kid._rkid
-        grand_kid._parent = node
-        node._lkid = grand_kid
-        left_kid._parent = grand_kid
-        left_kid._rkid = grand_kid._lkid
-        grand_kid._lkid = left_kid
-        if left_kid._rkid:
-            left_kid._rkid._parent = left_kid
-        if grand_kid._lkid and grand_kid._rkid:
-            self._self_balance_right_two_kid_rotation(node)
-        else:
-            self._self_balance_right_rotation(node)
-
-    def _self_balance_right_left_rotation(self, node):
-        """Balance sub-tree via left-right rotation."""
-        right_kid = node._rkid
-        grand_kid = right_kid._lkid
-        grand_kid._parent = node
-        node._rkid = grand_kid
-        right_kid._parent = grand_kid
-        right_kid._lkid = grand_kid._rkid
-        grand_kid._rkid = right_kid
-        if right_kid._lkid:
-            right_kid._lkid._parent = right_kid
-        if grand_kid._lkid and grand_kid._rkid:
-            self._self_balance_left_two_kid_rotation(node)
-        else:
-            self._self_balance_left_rotation(node)
 
 
 def _best_case():  # pragma no cover
