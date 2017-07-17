@@ -60,4 +60,3 @@ def test_longer_list_random_values_duplicates():
     """Test longer list with duplicates against result of sorted method."""
     input_list = [randint(0, 5) for x in range(100)]
     assert sort(input_list) == sorted(input_list)
-
