@@ -18,6 +18,19 @@ def init_trie_one_word():
 
 
 @pytest.fixture
+def init_trie_many_words_shared_letters():
+    """Init empty trie."""
+    new_trie = Trie()
+    new_trie.insert('be')
+    new_trie.insert('bee')
+    new_trie.insert('bell')
+    new_trie.insert('bevel')
+    new_trie.insert('besotted')
+    new_trie.insert('bovine')
+    return new_trie
+
+
+@pytest.fixture
 def init_trie_three_words_shared_letters():
     """Init empty trie."""
     new_trie = Trie()
@@ -99,29 +112,45 @@ def test_insert_empty_trie_two_words_same_beginning(init_empty_trie):
     init_empty_trie.insert('help')
     assert init_empty_trie.contains('hello') is True
     assert init_empty_trie.contains('help') is True
-    assert init_empty_trie._root._children[0]._data == 'h'
-    assert len(init_empty_trie._root._children) == 1
 
 
-def test_insert_empty_trie_two_words_unique_letters(init_empty_trie):
+def test_insert_empty_trie_two_words_unique_letters_contains(init_empty_trie):
     """Test insert method on empty trie."""
     init_empty_trie.insert('greetings')
     init_empty_trie.insert('ivory')
     assert init_empty_trie.contains('greetings') is True
     assert init_empty_trie.contains('ivory') is True
+
+
+def test_insert_empty_trie_two_words_unique_letters_root(init_empty_trie):
+    """Test insert method on empty trie."""
+    init_empty_trie.insert('greetings')
+    init_empty_trie.insert('ivory')
     assert init_empty_trie._root._children[0]._data == 'g'
     assert init_empty_trie._root._children[1]._data == 'i'
     assert len(init_empty_trie._root._children) == 2
 
 
-def test_insert_empty_trie_two_words_shared_letters(init_empty_trie):
+def test_insert_empty_trie_two_words_shared_letters_contains(init_empty_trie):
     """Test insert method on empty trie."""
     init_empty_trie.insert('morgan')
     init_empty_trie.insert('borgan')
     assert init_empty_trie.contains('morgan') is True
     assert init_empty_trie.contains('borgan') is True
+
+
+def test_insert_empty_trie_two_words_shared_letters_root(init_empty_trie):
+    """Test insert method on empty trie."""
+    init_empty_trie.insert('morgan')
+    init_empty_trie.insert('borgan')
     assert init_empty_trie._root._children[0]._data == 'm'
     assert init_empty_trie._root._children[1]._data == 'b'
+
+
+def test_insert_empty_trie_two_words_shared_letters_root_children_distinct(init_empty_trie):
+    """Test insert method on empty trie."""
+    init_empty_trie.insert('morgan')
+    init_empty_trie.insert('borgan')
     assert init_empty_trie._root._children[0]._children is not init_empty_trie._root._children[1]._children
     assert len(init_empty_trie._root._children) == 2
 
@@ -215,30 +244,57 @@ def test_traversal_start_string_with_space(init_trie_three_words_shared_letters)
         next(gen)
 
 
-def test_traversal_all_words(init_trie_three_words_shared_letters):
-    """Test all words with a shared start are generated."""
-    gen = init_trie_three_words_shared_letters.traversal('be')
-    assert next(gen) == 'be'
-    assert next(gen) == 'bee'
-    assert next(gen) == 'bell'
+def test_traversal_one_word(init_trie_many_words_shared_letters):
+    """Test traversal yield on smaller set."""
+    gen = init_trie_many_words_shared_letters.traversal('bo')
+    assert next(gen) == 'v'
+    assert next(gen) == 'i'
+    assert next(gen) == 'n'
+    assert next(gen) == 'e'
 
 
-def test_traversal_all_words_with_insert_not_in_gen(init_trie_three_words_shared_letters):
+def test_traversal_multiple_words_set(init_trie_many_words_shared_letters):
+    """Test traversal yield on smaller set."""
+    gen = init_trie_many_words_shared_letters.traversal('be')
+    assert next(gen) == 'e'
+    assert next(gen) == 'l'
+    assert next(gen) == 'l'
+    assert next(gen) == 'v'
+    assert next(gen) == 'e'
+    assert next(gen) == 'l'
+    assert next(gen) == 's'
+    assert next(gen) == 'o'
+    assert next(gen) == 't'
+    assert next(gen) == 't'
+    assert next(gen) == 'e'
+    assert next(gen) == 'd'
+
+
+def test_autocomplete_all_words(init_trie_three_words_shared_letters):
     """Test all words with a shared start are generated."""
+    assert init_trie_three_words_shared_letters.autocomplete('be') == ['be', 'bee', 'bell']
+
+
+def test_autocomplete_all_words_with_insert_excluded(init_trie_three_words_shared_letters):
+    """Test all words with a shared start are returned."""
     init_trie_three_words_shared_letters.insert('bacon')
-    gen = init_trie_three_words_shared_letters.traversal('be')
-    assert next(gen) == 'be'
-    assert next(gen) == 'bee'
-    assert next(gen) == 'bell'
+    assert init_trie_three_words_shared_letters.autocomplete('be') == ['be', 'bee', 'bell']
 
 
-def test_traversal_all_words_with_insert_in_gen(init_trie_three_words_shared_letters):
-    """Test all words with a shared start are generated."""
+def test_autocomplete_all_words_with_insert_included(init_trie_three_words_shared_letters):
+    """Test all words with a shared start are returned."""
     init_trie_three_words_shared_letters.insert('bacon')
-    gen = init_trie_three_words_shared_letters.traversal('b')
-    assert next(gen) == 'be'
-    assert next(gen) == 'bee'
-    assert next(gen) == 'bell'
+    assert init_trie_three_words_shared_letters.autocomplete('b') == ['be', 'bee', 'bell', 'bacon']
+
+
+def test_autocomplete_returns_default_number(init_trie_many_words_shared_letters):
+    """Test autocomplete only returns default number of words."""
+    assert len(init_trie_many_words_shared_letters.autocomplete('b')) == 4
+
+
+def test_autocomplete_returns_specified_number(init_trie_many_words_shared_letters):
+    """Test autocomplete only returns default number of words."""
+    assert len(init_trie_many_words_shared_letters.autocomplete('b', n=6)) == 6
 
 
 def test_non_matching_start_raises_stop_iteration(init_trie_three_words_shared_letters):
