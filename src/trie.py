@@ -42,8 +42,6 @@ class Trie(object):
     def insert(self, val):
         """Insert a new word into the Trie."""
         self._input_validation(val)
-        if self.contains(val):
-            raise ValueError('String is already in Trie.')
         current_node = self._root
         for char in val:
             if self._child_helper(current_node, char):

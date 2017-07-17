@@ -43,12 +43,11 @@ def init_trie_three_words_shared_letters():
 @pytest.fixture
 def init_jumbo_list():
     """Fixture for 250k word test."""
-    word_file = open('/usr/share/dict/words', 'r')
-    word_text = word_file.read()
-    word_file.close()
-    word_text = word_text.split('\n')
-    word_text = word_text[:-1]
-    return word_text
+    with open('/usr/share/dict/words', 'r') as word_file:
+        word_text = word_file.read()
+        word_text = word_text.split('\n')
+        word_text = word_text[:-1]
+        return word_text
 
 
 def test_init_empty_node():
@@ -95,8 +94,7 @@ def test_insert_two_words(init_empty_trie):
 
 def test_insert_duplicate(init_trie_one_word):
     """Check error is raised when iterable inserted."""
-    with pytest.raises(ValueError):
-        init_trie_one_word.insert('cake')
+    assert init_trie_one_word.insert('cake') is None
 
 
 def test_insert_empty_trie(init_empty_trie):
@@ -198,6 +196,15 @@ def test_remove_words_shared_beginning(init_trie_three_words_shared_letters):
     init_trie_three_words_shared_letters.remove('bell')
     assert init_trie_three_words_shared_letters.contains('bell') is False
     assert init_trie_three_words_shared_letters.contains('bee') is True
+
+
+def test_insert_jumbo_list_remove(init_jumbo_list):
+    """Test remove on jumbo word list."""
+    jumbo_trie = Trie()
+    for word in init_jumbo_list:
+        jumbo_trie.insert(word)
+    jumbo_trie.remove('apple')
+    assert jumbo_trie.contains('apple') is False
 
 
 def test_size_trie_before_and_after_remove(init_trie_three_words_shared_letters):
