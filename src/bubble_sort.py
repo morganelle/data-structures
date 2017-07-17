@@ -53,13 +53,10 @@ if __name__ == '__main__':  # pragma no cover
 print('''
 Here are some results for several test cases for the bubble sort,
 run 100 times each:
-
 Best case for 10 numbers: {} seconds
 Best case for 1000 numbers: {} seconds
-
 Worst case for 10 numbers: {} seconds
 Worst base for 1000 numbers: {} seconds
-
 Random case for 10 numbers: {} seconds
 Random case for 1000 numbers: {} seconds
 Random case for 1000 numbers with lots of duplicates
