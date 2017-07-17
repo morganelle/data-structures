@@ -38,3 +38,11 @@ Trie that stores single words.
     - size: returns the number of whole words in the trie. Time complexity is constant O(1).
     - contains: returns a boolean as to whether a word has been inserted in the trie. Time complexity is O(n).
     - traversal: takes a string and returns a generator of words in the trie that begin with the string. Time complexity is O(n), n being the length of the user input plus the length of all remaining characters. Worst case, n would be the size of the entire tree.
+
+## Sorting algorithms
+### Bubble sort
+- module: bubble_sort.py
+- tests: test_bubble_sort.py
+- methods:
+    - bubble_sort: returns a sorted list of numeric values
+- perfomance tests: run ```python bubble_sort.py`` in the terminal from the src directory to see performance tests; uses timeit Timer to measure speed.```
