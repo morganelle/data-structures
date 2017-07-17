@@ -3,6 +3,7 @@
 
 class Node(object):
     """Node attributes for Trie."""
+
     def __init__(self, parent=None, data=None):
         """Instantiate a new Node."""
         self._parent = parent
@@ -12,6 +13,7 @@ class Node(object):
 
 class Trie(object):
     """Attributes and methods of a Trie."""
+
     def __init__(self):
         """Instantiate a new Trie."""
         self._root = Node()
@@ -99,8 +101,9 @@ class Trie(object):
     def _traversal_helper(self, current_node, start):
         """Continue to build words from start and yield them back to traversal method."""
         for child in current_node._children:
-            if child._data is not '$':
-                yield child._data
+            if child._data == '$':
+                yield start
+            else:
                 for word in self._traversal_helper(child, start + child._data):
                     yield word
 
@@ -112,29 +115,3 @@ class Trie(object):
             raise ValueError('Please enter a string with no spaces.')
         if val is '':
             raise ValueError('Please enter a string with letters.')
-
-    def autocomplete(self, subsequence, n=4):
-        """Return a list of words starting with the subsequence."""
-        self._input_validation(subsequence)
-        current_node = self._root
-        word_list = []
-        for char in subsequence:
-            if self._child_helper(current_node, char):
-                current_node = self._child_helper(current_node, char)
-            else:
-                return word_list
-        all_words = self._autocomplete_helper(current_node, subsequence, [])
-        for word in all_words:
-            word_list.append(word)
-        return word_list[:n]
-
-    def _autocomplete_helper(self, current_node, subsequence, all_words):
-        """Continue to build words from start and return them back to autocomplete method."""
-        for child in current_node._children:
-            if child._data == '$':
-                all_words.append(subsequence)
-            else:
-                sub_words = self._autocomplete_helper(child, subsequence + child._data, [])
-                for word in sub_words:
-                    all_words.append(word)
-        return all_words
