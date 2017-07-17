@@ -37,7 +37,8 @@ Trie that stores single words.
     - remove: removes a word from the trie. Time complexity is O(n), n being the length of the word.
     - size: returns the number of whole words in the trie. Time complexity is constant O(1).
     - contains: returns a boolean as to whether a word has been inserted in the trie. Time complexity is O(n).
-    - traversal: takes a string and returns a generator of words in the trie that begin with the string. Time complexity is O(n), n being the length of the user input plus the length of all remaining characters. Worst case, n would be the size of the entire tree.
+    - traversal: takes a string and returns a generator of tokens in the trie that begin with the string. Time complexity is O(n), n being the length of the user input plus the length of all remaining characters. Worst case, n would be the size of the entire tree.
+    - autocomplete: takes a subsequence and returns a list of the first n words in the trie that begin with the subsequence. Time complexity is 0(n), n being the length of the subsequence plus the length of the words in the trie that begin with the subsequence.
 
 ## Sorting algorithms
 ### Bubble sort
