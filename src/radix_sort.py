@@ -6,13 +6,13 @@ def radix_sort(unsorted_list, set_digit=0):
     if type(unsorted_list) not in [list, tuple] or len(unsorted_list) < 1:
         raise TypeError('Please enter a list or a tuple with at least one value.')
     unsorted_list = list(unsorted_list)
-    num_list = [[], [], [], [], [], [], [], [], [], []]
+    num_list = [list() for _ in range(10)]
     sorted_list = []
     sort_complete = True
     for item in unsorted_list:
         _verify_input(item)
         digit = _get_digit(item, set_digit)
-        if digit > 0:
+        if item >= 10 ** (set_digit + 1):
             sort_complete = False
         num_list[digit].append(item)
     for i in range(10):
