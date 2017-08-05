@@ -50,24 +50,24 @@ if __name__ == '__main__':  # pragma no cover
         'bubble_sort([randint(0, 2) for x in range(1000)])',
         'from __main__ import bubble_sort; from random import randint'
     )
-print('''
-Here are some results for several test cases for the bubble sort,
-run 100 times each:
+    print('''
+    Here are some results for several test cases for the bubble sort,
+    run 100 times each:
 
-Best case for 10 numbers: {} seconds
-Best case for 1000 numbers: {} seconds
+    Best case for 10 numbers: {} seconds
+    Best case for 1000 numbers: {} seconds
 
-Worst case for 10 numbers: {} seconds
-Worst base for 1000 numbers: {} seconds
+    Worst case for 10 numbers: {} seconds
+    Worst base for 1000 numbers: {} seconds
 
-Random case for 10 numbers: {} seconds
-Random case for 1000 numbers: {} seconds
-Random case for 1000 numbers with lots of duplicates
-(secretly, the real worst case): {} seconds
-'''.format(best_case_short.timeit(100),
-           best_case_long.timeit(100),
-           worst_case_short.timeit(100),
-           worst_case_long.timeit(100),
-           random_short.timeit(100),
-           random_long.timeit(100),
-           random_long_dupes.timeit(100)))
+    Random case for 10 numbers: {} seconds
+    Random case for 1000 numbers: {} seconds
+    Random case for 1000 numbers with lots of duplicates
+    (secretly, the real worst case): {} seconds
+    '''.format(best_case_short.timeit(100),
+               best_case_long.timeit(100),
+               worst_case_short.timeit(100),
+               worst_case_long.timeit(100),
+               random_short.timeit(100),
+               random_long.timeit(100),
+               random_long_dupes.timeit(100)))

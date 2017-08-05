@@ -25,7 +25,7 @@ def radix_sort(unsorted_list, set_digit=0):
 
 def _get_digit(number, place):
     """Identify target place for a number."""
-    return ((number // 10 ** place) % 10)
+    return (int((number // 10 ** place) % 10))
 
 
 def _verify_input(input_item):
